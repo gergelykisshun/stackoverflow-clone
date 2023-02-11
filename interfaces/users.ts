@@ -1,0 +1,93 @@
+export interface IUserApiResponse {
+  backoff: number;
+  has_more: boolean;
+  items: IUser;
+  quota_max: number;
+  quota_remaining: number;
+}
+
+export interface IUser {}
+
+// accept_rate
+// :
+// 100
+// account_id
+// :
+// 11975
+// badge_counts
+// :
+// bronze
+// :
+// 2877
+// gold
+// :
+// 260
+// silver
+// :
+// 2531
+// [[Prototype]]
+// :
+// Object
+// collectives
+// :
+// Array(1)
+// 0
+// :
+// {collective: {…}, role: 'member'}
+// length
+// :
+// 1
+// [[Prototype]]
+// :
+// Array(0)
+// creation_date
+// :
+// 1222667162
+// display_name
+// :
+// "Marc Gravell"
+// is_employee
+// :
+// false
+// last_access_date
+// :
+// 1676126005
+// last_modified_date
+// :
+// 1676022900
+// link
+// :
+// "https://stackoverflow.com/users/23354/marc-gravell"
+// location
+// :
+// "Forest of Dean, United Kingdom"
+// profile_image
+// :
+// "https://i.stack.imgur.com/CrVFH.png?s=256&g=1"
+// reputation
+// :
+// 1007062
+// reputation_change_day
+// :
+// 40
+// reputation_change_month
+// :
+// 1411
+// reputation_change_quarter
+// :
+// 5268
+// reputation_change_week
+// :
+// 1015
+// reputation_change_year
+// :
+// 5268
+// user_id
+// :
+// 23354
+// user_type
+// :
+// "registered"
+// website_url
+// :
+// "http://blog.marcgravell.com"

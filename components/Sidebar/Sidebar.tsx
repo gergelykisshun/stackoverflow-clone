@@ -1,5 +1,5 @@
 import { Toolbar, Divider, List, Typography } from "@mui/material";
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 
 import LocalOfferIcon from "@mui/icons-material/Mail";
 
