@@ -5,16 +5,23 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import Link from "next/link";
 import React, { FC } from "react";
 
-const SidebarOption: FC<ISidebarOption> = ({ icon, text }) => {
+interface Props extends ISidebarOption {
+  isSelected: boolean;
+}
+
+const SidebarOption: FC<Props> = ({ icon, text, routeTo, isSelected }) => {
   return (
-    <ListItem disablePadding>
-      <ListItemButton>
-        <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText primary={text} />
-      </ListItemButton>
-    </ListItem>
+    <Link href={routeTo}>
+      <ListItem disablePadding>
+        <ListItemButton selected={isSelected}>
+          <ListItemIcon>{icon}</ListItemIcon>
+          <ListItemText primary={text} />
+        </ListItemButton>
+      </ListItem>
+    </Link>
   );
 };
 

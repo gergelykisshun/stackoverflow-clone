@@ -1,4 +1,5 @@
 export interface ISidebarOption {
-  text: string;
+  text: "Questions" | "Tags" | "Users";
   icon: JSX.Element;
+  routeTo: string;
 }
