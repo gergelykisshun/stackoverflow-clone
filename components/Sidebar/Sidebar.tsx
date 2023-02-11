@@ -20,14 +20,16 @@ const Sidebar: FC<Props> = () => {
 
   return (
     <div>
-      <Toolbar>
-        <DynamicFormIcon sx={{ marginRight: 5 }} />
-        <Typography variant="h6">overflow clone</Typography>
+      <Toolbar className="px-4">
+        <DynamicFormIcon className="mr-2" />
+        <Typography variant="h6">
+          Overflow <span className="text-orange-400">clone</span>
+        </Typography>
       </Toolbar>
       <Divider />
       <List>
         {sidebarOptions.map((option) => (
-          <SidebarOption {...option} />
+          <SidebarOption key={option.text} {...option} />
         ))}
       </List>
     </div>
