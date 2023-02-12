@@ -6,10 +6,11 @@ import {
   InputBase,
   Divider,
 } from "@mui/material";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import SendIcon from "@mui/icons-material/Send";
+import { useRouter } from "next/router";
 
 type Props = {
   handleDrawerToggle: () => void;
@@ -17,6 +18,11 @@ type Props = {
 };
 
 const Header: FC<Props> = ({ drawerWidth, handleDrawerToggle }) => {
+  const [searchText, SetSearchText] = useState<string>("");
+  const router = useRouter();
+
+  const initSearch = () => router.push(`/search?intitle=${searchText}`);
+
   return (
     <AppBar
       position="fixed"
@@ -44,6 +50,10 @@ const Header: FC<Props> = ({ drawerWidth, handleDrawerToggle }) => {
             alignItems: "center",
             width: 400,
           }}
+          onSubmit={(e) => {
+            e.preventDefault();
+            initSearch();
+          }}
         >
           <IconButton
             type="button"
@@ -53,12 +63,18 @@ const Header: FC<Props> = ({ drawerWidth, handleDrawerToggle }) => {
           >
             <SearchIcon />
           </IconButton>
-          <InputBase sx={{ ml: 1, flex: 1 }} placeholder="Search..." />
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            placeholder="Search..."
+            value={searchText}
+            onChange={(e) => SetSearchText(e.target.value)}
+          />
           <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
           <IconButton
             color="primary"
             sx={{ p: "10px" }}
             aria-label="send search"
+            onClick={initSearch}
           >
             <SendIcon />
           </IconButton>
