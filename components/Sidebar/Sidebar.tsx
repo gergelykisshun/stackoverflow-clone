@@ -24,8 +24,8 @@ const Sidebar: FC<Props> = () => {
   return (
     <div>
       <Toolbar className="px-4">
-        <DynamicFormIcon className="mr-2" />
-        <Typography variant="h6">
+        <DynamicFormIcon color="primary" className="mr-2" />
+        <Typography variant="h6" className="cursor-pointer">
           Overflow{" "}
           <Typography color="primary.main" component="span" variant="h6">
             clone

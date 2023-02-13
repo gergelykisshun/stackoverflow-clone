@@ -1,15 +1,14 @@
-import { Box, CssBaseline, Drawer, Toolbar, Typography } from "@mui/material";
-import { Container } from "@mui/system";
+import { Box, CssBaseline, Drawer } from "@mui/material";
+
 import React, { FC, ReactNode, useState } from "react";
 import Header from "../Header/Header";
 import Sidebar from "../Sidebar/Sidebar";
 
 type Props = {
   children: ReactNode;
-  window?: () => Window;
 };
 
-const Layout: FC<Props> = ({ children, window }) => {
+const Layout: FC<Props> = ({ children }) => {
   const drawerWidth = 240;
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
 
@@ -17,11 +16,8 @@ const Layout: FC<Props> = ({ children, window }) => {
     setMobileOpen(!mobileOpen);
   };
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
-
   return (
-    <Container sx={{ display: "flex" }}>
+    <Box className="flex">
       <CssBaseline />
       <Header
         drawerWidth={drawerWidth}
@@ -32,14 +28,12 @@ const Layout: FC<Props> = ({ children, window }) => {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
         <Drawer
-          container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },
@@ -76,7 +70,7 @@ const Layout: FC<Props> = ({ children, window }) => {
       >
         {children}
       </Box>
-    </Container>
+    </Box>
   );
 };
 

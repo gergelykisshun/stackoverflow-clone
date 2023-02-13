@@ -4,7 +4,6 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Typography,
 } from "@mui/material";
 import Link from "next/link";
 import React, { FC } from "react";
@@ -17,18 +16,9 @@ const SidebarOption: FC<Props> = ({ icon, text, routeTo, isSelected }) => {
   return (
     <Link href={routeTo}>
       <ListItem disablePadding>
-        <ListItemButton selected={isSelected}>
-          <ListItemIcon>{icon}</ListItemIcon>
-          <ListItemText
-            primary={
-              <Typography
-                className="text-black no-underline"
-                sx={{ textDecoration: "none" }}
-              >
-                {text}
-              </Typography>
-            }
-          />
+        <ListItemButton className="gap-3" selected={isSelected}>
+          <ListItemIcon className="min-w-0">{icon}</ListItemIcon>
+          <ListItemText primary={text} />
         </ListItemButton>
       </ListItem>
     </Link>
