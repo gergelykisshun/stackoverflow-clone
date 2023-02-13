@@ -1,13 +1,19 @@
 import React from "react";
 import { GetStaticProps, NextPage } from "next";
 import { getAllUsers } from "@/axios/users";
+import { Typography } from "@mui/material";
+import { IUser } from "@/interfaces/users";
 
 type Props = {
-  users: any;
+  users: IUser[];
+  error?: string;
 };
 
-const AllUsersPage: NextPage<Props> = ({ users }) => {
+const AllUsersPage: NextPage<Props> = ({ users, error }) => {
   console.log("USERS ON PAGE", users);
+  if (error) {
+    return <Typography variant="h6">{error}</Typography>;
+  }
   return <div>AllUsersPage</div>;
 };
 

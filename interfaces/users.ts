@@ -1,7 +1,7 @@
 export interface IUserApiResponse {
   backoff: number;
   has_more: boolean;
-  items: IUser;
+  items: IUser[];
   quota_max: number;
   quota_remaining: number;
 }
