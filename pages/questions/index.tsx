@@ -4,6 +4,7 @@ import { getAllQuestions } from "@/axios/questions";
 import { IQuestion } from "@/interfaces/question";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import QuestionCard from "@/components/Cards/QuestionCard/QuestionCard";
 
 type Props = {
   questions: IQuestion[];
@@ -16,12 +17,9 @@ const AllQuestionsPage: NextPage<Props> = ({ questions, error }) => {
   }
 
   return (
-    <Box display={"flex"}>
+    <Box className="grid grid-cols-1">
       {questions.map((question) => (
-        <div key={question.question_id}>
-          {" "}
-          {question.title} by {question.owner.display_name}
-        </div>
+        <QuestionCard key={question.question_id} question={question} />
       ))}
     </Box>
   );
