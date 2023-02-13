@@ -1,9 +1,10 @@
-import { ISidebarOption } from "@/interfaces/Sidebar";
+import { ISidebarOption } from "@/interfaces/sidebar";
 import {
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from "@mui/material";
 import Link from "next/link";
 import React, { FC } from "react";
@@ -18,7 +19,16 @@ const SidebarOption: FC<Props> = ({ icon, text, routeTo, isSelected }) => {
       <ListItem disablePadding>
         <ListItemButton selected={isSelected}>
           <ListItemIcon>{icon}</ListItemIcon>
-          <ListItemText primary={text} />
+          <ListItemText
+            primary={
+              <Typography
+                className="text-black no-underline"
+                sx={{ textDecoration: "none" }}
+              >
+                {text}
+              </Typography>
+            }
+          />
         </ListItemButton>
       </ListItem>
     </Link>
