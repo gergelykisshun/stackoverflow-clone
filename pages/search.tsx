@@ -1,5 +1,7 @@
 import { searchByQueries } from "@/axios/search";
+import QuestionCard from "@/components/Cards/QuestionCard/QuestionCard";
 import { IQuestion } from "@/interfaces/question";
+import { Box } from "@mui/material";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
 
@@ -8,7 +10,13 @@ type Props = {
 };
 
 const SearchPage: NextPage<Props> = ({ questions }) => {
-  return <div>SearchPage</div>;
+  return (
+    <Box className="grid grid-cols-1">
+      {questions.map((question) => (
+        <QuestionCard key={question.question_id} question={question} />
+      ))}
+    </Box>
+  );
 };
 
 export default SearchPage;
