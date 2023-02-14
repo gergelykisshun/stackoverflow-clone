@@ -29,6 +29,8 @@ export interface IUser {
   user_id: number;
   user_type: string;
   website_url: string;
+
+  topTags?: string[];
 }
 
 export interface ICollective {}
@@ -37,4 +39,20 @@ export interface IUserBadges {
   bronze: number;
   gold: number;
   silver: number;
+}
+
+export interface IUserQueryParams {
+  page?: number;
+  pageSize?: number;
+
+  todate?: number;
+  fromdate?: number;
+
+  max?: number;
+  min?: number;
+
+  order: "desc" | "asc";
+  sort: "reputation" | "creation" | "name" | "modified";
+
+  ids: string;
 }

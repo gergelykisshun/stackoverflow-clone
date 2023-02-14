@@ -6,7 +6,7 @@ import { ButtonGroup, Divider, Typography } from "@mui/material";
 import TagButton from "@/components/TagButton/TagButton";
 import Link from "next/link";
 import { decodeSpecialChars } from "@/utility/decodeSpecialChars";
-import defaultAvatar from "@/assets/default-avatar.jpeg";
+import { useDefaultImageOnError } from "@/hooks/useDefaultImageOnError";
 
 type Props = {
   question: IQuestion;
@@ -15,10 +15,9 @@ type Props = {
 const QuestionCard: FC<Props> = ({ question }) => {
   const owner = question.owner;
 
-  const [ownerImage, setOwnerImage] = useState<string>(owner.profile_image);
-  const onImageError = () => {
-    setOwnerImage("/images/default-avatar.jpeg");
-  };
+  const [ownerImage, onImageError] = useDefaultImageOnError(
+    owner.profile_image
+  );
 
   return (
     <>
