@@ -34,8 +34,20 @@ const UserCard: FC<Props> = ({ user }) => {
           </Typography>
         </Link>
         {user.location && <p>{user.location}</p>}
-        <p>{user.accept_rate}</p>
-        <p>{user.reputation}</p>
+        <Typography
+          color="success.light"
+          variant="button"
+          className="text-xs flex items-center"
+        >
+          reputation: {user.reputation}
+        </Typography>
+        <Typography
+          color="warning.main"
+          variant="button"
+          className="text-xs flex items-center"
+        >
+          reputation: {user.reputation}
+        </Typography>
         {user.topTags &&
           user.topTags.map((tag) => (
             <TagButton tag={tag} key={Math.random() + tag} />
