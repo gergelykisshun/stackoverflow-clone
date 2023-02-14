@@ -13,9 +13,9 @@ const UserCard: FC<Props> = ({ user }) => {
   const [ownerImage, onImageError] = useDefaultImageOnError(user.profile_image);
 
   return (
-    <div className="flex">
+    <div className="flex gap-2">
       <img
-        className="w-5 h-5 object-cover rounded-sm"
+        className="w-10 h-10 object-cover rounded-sm"
         src={ownerImage}
         onError={onImageError}
         alt=""
@@ -39,19 +39,21 @@ const UserCard: FC<Props> = ({ user }) => {
           variant="button"
           className="text-xs flex items-center"
         >
-          reputation: {user.reputation}
+          accept rate: {user.accept_rate}
         </Typography>
         <Typography
           color="warning.main"
           variant="button"
-          className="text-xs flex items-center"
+          className="text-xs flex items-center mb-2"
         >
           reputation: {user.reputation}
         </Typography>
-        {user.topTags &&
-          user.topTags.map((tag) => (
-            <TagButton tag={tag} key={Math.random() + tag} />
-          ))}
+        <div className="flex flex-wrap gap-2">
+          {user.topTags &&
+            user.topTags.map((tag) => (
+              <TagButton tag={tag} key={Math.random() + tag} />
+            ))}
+        </div>
       </div>
     </div>
   );
