@@ -1,6 +1,6 @@
 import { getUserById, getUserTagsByUserId } from "@/axios/users";
 import { useDefaultImageOnError } from "@/hooks/useDefaultImageOnError";
-import { IUser, IUserBadges } from "@/interfaces/users";
+import { IUser, IUserBadges, IUserStat } from "@/interfaces/users";
 import durationFromEpochUntilNow from "@/utility/durationFromEpochUntilNow";
 import { Paper, Typography } from "@mui/material";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
@@ -12,6 +12,7 @@ import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import epochToDate from "@/utility/epochToDate";
 import BadgeCard from "@/components/Cards/BadgeCard/BadgeCard";
 import UserTopTagsTable from "@/components/Tables/UserTopTagsTable";
+import UserStats from "@/components/UserStats/UserStats";
 
 type Props = {
   user: IUser;
@@ -20,6 +21,15 @@ type Props = {
 const UserProfilePage: NextPage<Props> = ({ user }) => {
   const [ownerImage, onImageError] = useDefaultImageOnError(user.profile_image);
   const mutedDetailsSharedStyle = "flex items-center gap-2.5 mb-0.5";
+
+  const userStats: IUserStat[] = [
+    { count: user.reputation, text: "reputation" },
+    { count: user.accept_rate, text: "accept rate" },
+    {
+      count: user.reputation_change_month,
+      text: "reputation this month",
+    },
+  ];
 
   return (
     <div>
@@ -84,17 +94,26 @@ const UserProfilePage: NextPage<Props> = ({ user }) => {
       <div></div>
 
       {/* Main container */}
-      <div className="grid grid-cols-1 lg:grid-cols-4">
+      <div className="grid grid-cols-1 lg:grid-cols-4 space-x-0 lg:space-x-5">
         {/* Stats + collectives + communities */}
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 mb-10">
           <div>
             <Typography
               variant="h6"
               className="font-normal"
               color="primary.main"
+              gutterBottom
             >
               Stats
             </Typography>
+            <Paper
+              className="flex flex-wrap lg:flex-col gap-5 justify-center max-w-lg mx-auto p-5"
+              elevation={3}
+            >
+              {userStats.map((userStat) => (
+                <UserStats {...userStat} />
+              ))}
+            </Paper>
           </div>
         </div>
 

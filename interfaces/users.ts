@@ -58,3 +58,8 @@ export interface IUserQueryParams {
 
   ids: string;
 }
+
+export interface IUserStat {
+  count: number;
+  text: string;
+}
