@@ -1,6 +1,6 @@
-import { getUserById } from "@/axios/users";
+import { getUserById, getUserTagsByUserId } from "@/axios/users";
 import { useDefaultImageOnError } from "@/hooks/useDefaultImageOnError";
-import { IUser } from "@/interfaces/users";
+import { IUser, IUserBadges } from "@/interfaces/users";
 import durationFromEpochUntilNow from "@/utility/durationFromEpochUntilNow";
 import { Paper, Typography } from "@mui/material";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
@@ -10,6 +10,8 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import epochToDate from "@/utility/epochToDate";
+import BadgeCard from "@/components/Cards/BadgeCard/BadgeCard";
+import UserTopTagsTable from "@/components/Tables/UserTopTagsTable";
 
 type Props = {
   user: IUser;
@@ -84,10 +86,60 @@ const UserProfilePage: NextPage<Props> = ({ user }) => {
       {/* Main container */}
       <div className="grid grid-cols-1 lg:grid-cols-4">
         {/* Stats + collectives + communities */}
-        <div className="lg:col-span-1">1</div>
+        <div className="lg:col-span-1">
+          <div>
+            <Typography
+              variant="h6"
+              className="font-normal"
+              color="primary.main"
+            >
+              Stats
+            </Typography>
+          </div>
+        </div>
 
         {/* About + Badges + Top tags + Top posts */}
-        <div className="lg:col-span-2">2</div>
+        <div className="lg:col-span-2">
+          <div className="mb-10">
+            <Typography
+              variant="h6"
+              className="font-normal"
+              color="primary.main"
+              gutterBottom
+            >
+              Badges
+            </Typography>
+
+            <div className="flex flex-wrap gap-5 justify-center">
+              {Object.keys(user.badge_counts).map((badgeType) => {
+                return (
+                  <BadgeCard
+                    badgeType={badgeType as keyof IUserBadges}
+                    badgeCount={
+                      user.badge_counts[badgeType as keyof IUserBadges]
+                    }
+                  />
+                );
+              })}
+            </div>
+          </div>
+
+          {user.topTags && (
+            <div>
+              <Typography
+                variant="h6"
+                className="font-normal"
+                color="primary.main"
+                gutterBottom
+              >
+                Top 10 tags
+              </Typography>
+              <div className="max-w-xl mx-auto">
+                <UserTopTagsTable tags={user.topTags} />
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -103,7 +155,13 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (userId) {
     try {
       const user = await getUserById(Number(userId));
-      return { props: { user } };
+
+      try {
+        const topTags = await getUserTagsByUserId(user.user_id, 10);
+        return { props: { user: { ...user, topTags } } };
+      } catch (e) {
+        return { props: { user } };
+      }
     } catch (e) {
       return { notFound: true };
     }

@@ -1,3 +1,5 @@
+import { ITag } from "./tags";
+
 export interface IUserApiResponse {
   backoff: number;
   has_more: boolean;
@@ -30,7 +32,7 @@ export interface IUser {
   user_type: string;
   website_url: string;
 
-  topTags?: string[];
+  topTags?: ITag[];
 }
 
 export interface ICollective {}

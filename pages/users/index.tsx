@@ -32,9 +32,7 @@ export const getStaticProps: GetStaticProps = async () => {
     const usersWithTags = await Promise.all(
       users.map(async (user) => {
         try {
-          const topTags = (await getUserTagsByUserId(user.user_id)).map(
-            (tag) => tag.name
-          );
+          const topTags = await getUserTagsByUserId(user.user_id);
           return { ...user, topTags };
         } catch (e) {
           return user;

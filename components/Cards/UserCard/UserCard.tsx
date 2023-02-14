@@ -50,7 +50,7 @@ const UserCard: FC<Props> = ({ user }) => {
         <div className="flex flex-wrap gap-2">
           {user.topTags &&
             user.topTags.map((tag) => (
-              <TagButton tag={tag} key={Math.random() + tag} />
+              <TagButton tag={tag.name} key={Math.random() + tag.name} />
             ))}
         </div>
       </div>
