@@ -8,5 +8,6 @@ export const getAllQuestions = async (): Promise<IQuestion[]> => {
   const response = await api.get<IGenericApiResponse<IQuestion>>(
     QUESTIONBASE_URL
   );
+
   return response.data.items;
 };
