@@ -20,10 +20,13 @@ export const getUserById = async (userId: number): Promise<IUser> => {
   throw new Error("User not found");
 };
 
-export const getUserTagsByUserId = async (userId: number): Promise<ITag[]> => {
+export const getUserTagsByUserId = async (
+  userId: number,
+  pagesize: number = 5
+): Promise<ITag[]> => {
   const response = await api.get<IGenericApiResponse<ITag>>(
     `${USERSBASE_URL}/${userId}/tags`,
-    { params: { pagesize: 5 } }
+    { params: { pagesize } }
   );
 
   return response.data.items;

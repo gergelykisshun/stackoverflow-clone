@@ -60,7 +60,7 @@ const QuestionCard: FC<Props> = ({ question }) => {
           <Link
             className="flex flex-wrap gap-2"
             target="_blank"
-            href={owner.link}
+            href={`/users/${owner.user_id}`}
           >
             <img
               className="w-5 h-5 object-cover rounded-sm"

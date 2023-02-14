@@ -28,18 +28,17 @@ const UserCard: FC<Props> = ({ user }) => {
             color="primary.main"
             variant="body1"
             className="font-semibold"
-            gutterBottom
           >
             {user.display_name}
           </Typography>
         </Link>
-        {user.location && <p>{user.location}</p>}
+        {user.location && <p className="mb-1">{user.location}</p>}
         <Typography
           color="success.light"
           variant="button"
           className="text-xs flex items-center"
         >
-          accept rate: {user.accept_rate}
+          accept rate: {user.accept_rate || 0}
         </Typography>
         <Typography
           color="warning.main"
