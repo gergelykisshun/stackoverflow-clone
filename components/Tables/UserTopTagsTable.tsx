@@ -24,7 +24,7 @@ const UserTopTagsTable: FC<Props> = ({ tags }) => {
           {rows.map((row) => (
             <TableRow key={row.tag}>
               <TableCell component="th" scope="row">
-                <TagButton tag={row.tag} />
+                <TagButton tag={row.tag} size="xs:text-sm text-md " />
               </TableCell>
               <TableCell align="right">{row.count} posts</TableCell>
             </TableRow>
