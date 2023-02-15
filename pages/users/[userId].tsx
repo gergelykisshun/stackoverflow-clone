@@ -133,6 +133,7 @@ const UserProfilePage: NextPage<Props> = ({ user }) => {
               {Object.keys(user.badge_counts).map((badgeType) => {
                 return (
                   <BadgeCard
+                    key={badgeType}
                     badgeType={badgeType as keyof IUserBadges}
                     badgeCount={
                       user.badge_counts[badgeType as keyof IUserBadges]
@@ -167,7 +168,8 @@ const UserProfilePage: NextPage<Props> = ({ user }) => {
 export default UserProfilePage;
 
 export const getServerSideProps: GetServerSideProps = async ({
-  params, res
+  params,
+  res,
 }: GetServerSidePropsContext) => {
   res.setHeader(
     "Cache-control",
