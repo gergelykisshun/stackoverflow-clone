@@ -1,6 +1,6 @@
 export interface ISearchQueryParams {
   page?: number;
-  pageSize?: number;
+  pagesize?: number;
 
   todate?: number;
   fromdate?: number;
@@ -8,10 +8,10 @@ export interface ISearchQueryParams {
   max?: number;
   min?: number;
 
-  order: "desc" | "asc";
-  sort: "activity" | "votes" | "creation" | "relevance";
+  order?: "desc" | "asc";
+  sort?: "activity" | "votes" | "creation" | "relevance";
 
-  intitle: string;
-  tagged: string;
+  intitle?: string;
+  tagged?: string;
   nottagged?: string;
 }

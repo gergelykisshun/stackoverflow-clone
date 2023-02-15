@@ -45,7 +45,7 @@ export interface IUserBadges {
 
 export interface IUserQueryParams {
   page?: number;
-  pageSize?: number;
+  pagesize?: number;
 
   todate?: number;
   fromdate?: number;
@@ -53,8 +53,8 @@ export interface IUserQueryParams {
   max?: number;
   min?: number;
 
-  order: "desc" | "asc";
-  sort: "reputation" | "creation" | "name" | "modified";
+  order?: "desc" | "asc";
+  sort?: "reputation" | "creation" | "name" | "modified";
 
   ids: string;
 }

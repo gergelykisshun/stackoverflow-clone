@@ -4,6 +4,9 @@ import { IQuestion } from "@/interfaces/question";
 import { Box, Typography } from "@mui/material";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
+import Joi from "joi";
+import { searchQuerySchema } from "@/schema/search";
+import { ISearchQueryParams } from "@/interfaces/search";
 
 type Props = {
   questions: IQuestion[];
@@ -39,15 +42,28 @@ export const getServerSideProps: GetServerSideProps = async ({
     return {
       props: {
         questions: [],
-        error: "One of intitle or tagged must be set to search!",
+        error: "One of intitle or tagged queries must be set to search!",
       },
     };
   }
 
   try {
-    const questions: IQuestion[] = await searchByQueries(query);
+    const searchQuery = Joi.attempt(
+      query,
+      searchQuerySchema
+    ) as ISearchQueryParams;
+
+    const questions: IQuestion[] = await searchByQueries(searchQuery);
     return { props: { questions } };
   } catch (e: any) {
-    return { props: { questions: [], error: e.response.data.error_message } };
+    return {
+      props: {
+        questions: [],
+        error:
+          e.response?.data.error_message || e.details?.length > 0
+            ? e.details[0].message
+            : "Sorry something went wrong!",
+      },
+    };
   }
 };
