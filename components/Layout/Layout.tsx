@@ -1,7 +1,9 @@
 import { Box, CssBaseline, Drawer } from "@mui/material";
+import { useRouter } from "next/router";
 
-import React, { FC, ReactNode, useState } from "react";
+import React, { FC, ReactNode, useEffect, useState } from "react";
 import Header from "../Header/Header";
+import ProgressBar from "../ProgressBar/ProgressBar";
 import Sidebar from "../Sidebar/Sidebar";
 
 type Props = {
@@ -15,6 +17,24 @@ const Layout: FC<Props> = ({ children }) => {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleStart = () => setIsLoading(true);
+    const handleStop = () => setIsLoading(false);
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleStop);
+    router.events.on("routeChangeError", handleStop);
+
+    return () => {
+      router.events.off("routeChangeStart", () => handleStart);
+      router.events.off("routeChangeComplete", handleStop);
+      router.events.off("routeChangeError", handleStop);
+    };
+  }, [router]);
 
   return (
     <Box className="flex">
@@ -68,6 +88,7 @@ const Layout: FC<Props> = ({ children }) => {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
+        {isLoading && <ProgressBar />}
         {children}
       </Box>
     </Box>
