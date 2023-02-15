@@ -6,7 +6,7 @@ interface TagsState {
   tags: TagRecord;
 }
 
-type TagRecord = Record<number, ITag>;
+type TagRecord = Record<number, ITag[]>;
 
 interface TagsActions {
   addNewTags: (tags: ITag[]) => void;
@@ -26,7 +26,13 @@ export const useTagStore = create(
 
           tags.forEach((tag) => {
             if (tag.user_id) {
-              currentTags[`${tag.user_id}`] = tag;
+              let tagsUnderUserId = currentTags[`${tag.user_id}`];
+
+              if (tagsUnderUserId) {
+                tagsUnderUserId = [...tagsUnderUserId, tag];
+              }
+
+              tagsUnderUserId = [tag];
             }
           });
 

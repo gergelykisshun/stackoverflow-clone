@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { getUsersByQuery, getUserTagsByUserId } from "@/axios/users";
 import { Box, Typography } from "@mui/material";
@@ -7,6 +7,8 @@ import UserCard from "@/components/Cards/UserCard/UserCard";
 import Paginator from "@/components/Paginator/Paginator";
 import validateSchema from "@/schema/validateSchema";
 import { userQuerySchema } from "@/schema/user";
+import { useTagStore } from "@/store/userTagsStore";
+import { ITag } from "@/interfaces/tags";
 
 type Props = {
   users: IUser[];
@@ -14,6 +16,22 @@ type Props = {
 };
 
 const AllUsersPage: NextPage<Props> = ({ users, error }) => {
+  const addNewTags = useTagStore((state) => state.addNewTags);
+
+  // TODO
+  useEffect(() => {
+    let tagsToAdd: ITag[] = [];
+
+    users.forEach((user) => {
+      if (user.topTags && user.topTags.length > 0) {
+        tagsToAdd = [...tagsToAdd, ...user.topTags];
+      }
+    });
+
+    console.log(tagsToAdd);
+    addNewTags(tagsToAdd);
+  }, []);
+
   if (error) {
     return <Typography variant="h6">{error}</Typography>;
   }

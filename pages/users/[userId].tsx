@@ -4,7 +4,7 @@ import { IUser, IUserBadges, IUserStat } from "@/interfaces/users";
 import durationFromEpochUntilNow from "@/utility/durationFromEpochUntilNow";
 import { Paper, Typography } from "@mui/material";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
-import React from "react";
+import React, { useEffect } from "react";
 import CakeIcon from "@mui/icons-material/Cake";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -13,6 +13,8 @@ import epochToDate from "@/utility/epochToDate";
 import BadgeCard from "@/components/Cards/BadgeCard/BadgeCard";
 import UserTopTagsTable from "@/components/Tables/UserTopTagsTable";
 import UserStats from "@/components/UserStats/UserStats";
+import { useTagStore } from "@/store/userTagsStore";
+import { ITag } from "@/interfaces/tags";
 
 type Props = {
   user: IUser;
@@ -21,6 +23,7 @@ type Props = {
 const UserProfilePage: NextPage<Props> = ({ user }) => {
   const [ownerImage, onImageError] = useDefaultImageOnError(user.profile_image);
   const mutedDetailsSharedStyle = "flex items-center gap-2.5 mb-0.5";
+  const addNewTags = useTagStore((state) => state.addNewTags);
 
   const userStats: IUserStat[] = [
     { count: user.reputation, text: "reputation" },
@@ -30,6 +33,14 @@ const UserProfilePage: NextPage<Props> = ({ user }) => {
       text: "reputation this month",
     },
   ];
+
+  // TODO
+  useEffect(() => {
+    if (user.topTags && user.topTags.length > 0) {
+      console.log(user.topTags);
+      addNewTags(user.topTags);
+    }
+  }, []);
 
   return (
     <div>

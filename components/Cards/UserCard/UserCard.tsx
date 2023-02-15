@@ -1,9 +1,11 @@
 import TagButton from "@/components/TagButton/TagButton";
 import { useDefaultImageOnError } from "@/hooks/useDefaultImageOnError";
+import { ITag } from "@/interfaces/tags";
 import { IUser } from "@/interfaces/users";
+import { useTagStore } from "@/store/userTagsStore";
 import { Typography } from "@mui/material";
 import Link from "next/link";
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 
 type Props = {
   user: IUser;
@@ -11,6 +13,17 @@ type Props = {
 
 const UserCard: FC<Props> = ({ user }) => {
   const [ownerImage, onImageError] = useDefaultImageOnError(user.profile_image);
+  const [tagsFromCache, setTagsFromCache] = useState<ITag[] | null>(null);
+  const tagsInCache = useTagStore((state) => state.tags);
+
+  useEffect(() => {
+    if (!user.topTags) {
+      console.log("NO TAGS FOR USER", user.display_name);
+      tagsInCache[`${user.user_id}`]
+        ? setTagsFromCache(tagsInCache[`${user.user_id}`])
+        : setTagsFromCache([]);
+    }
+  }, []);
 
   return (
     <div className="flex gap-2">
@@ -50,6 +63,12 @@ const UserCard: FC<Props> = ({ user }) => {
         <div className="flex flex-wrap gap-2">
           {user.topTags &&
             user.topTags.map((tag) => (
+              <TagButton tag={tag.name} key={Math.random() + tag.name} />
+            ))}
+          {/* TODO prettier implement */}
+          {!user.topTags &&
+            tagsFromCache &&
+            tagsFromCache.map((tag) => (
               <TagButton tag={tag.name} key={Math.random() + tag.name} />
             ))}
         </div>
