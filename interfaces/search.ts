@@ -1,14 +1,6 @@
-export interface ISearchQueryParams {
-  page?: number;
-  pagesize?: number;
+import { IGenericApiQuery } from "./generic";
 
-  todate?: number;
-  fromdate?: number;
-
-  max?: number;
-  min?: number;
-
-  order?: "desc" | "asc";
+export interface ISearchQueryParams extends IGenericApiQuery {
   sort?: "activity" | "votes" | "creation" | "relevance";
 
   intitle?: string;

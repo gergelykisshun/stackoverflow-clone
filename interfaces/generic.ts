@@ -8,3 +8,16 @@ export interface IGenericApiResponse<T> {
   quota_max: number;
   quota_remaining: number;
 }
+
+export interface IGenericApiQuery {
+  page?: number;
+  pagesize?: number;
+
+  todate?: number;
+  fromdate?: number;
+
+  max?: number;
+  min?: number;
+
+  order?: "desc" | "asc";
+}

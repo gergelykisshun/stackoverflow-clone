@@ -1,18 +1,31 @@
+import { UserType } from "@/enums/user";
+import { IGenericApiQuery } from "./generic";
 import { ITag } from "./tags";
 
-export interface IUser {
-  accept_rate: number;
+export interface IShallowUser {
+  accept_rate?: number;
   account_id: number;
-  badge_counts: IUserBadges;
+  display_name?: string;
+  link?: string;
+  profile_image?: string;
+  reputation: number;
+  user_id?: number;
+  user_type: UserType;
+}
 
-  collectives: ICollective[];
+export interface IUser {
+  accept_rate?: number;
+  account_id: number;
+  age?: number;
+  badge_counts: IUserBadges;
+  collectives?: ICollective[];
   creation_date: number;
   display_name: string;
   is_employee: boolean;
   last_access_date: number;
-  last_modified_date: number;
+  last_modified_date?: number;
   link: string;
-  location: string;
+  location?: string;
   profile_image: string;
   reputation: number;
   reputation_change_day: number;
@@ -21,9 +34,10 @@ export interface IUser {
   reputation_change_week: number;
   reputation_change_year: number;
   user_id: number;
-  user_type: string;
-  website_url: string;
+  user_type: UserType;
+  website_url?: string;
 
+  // added
   topTags?: ITag[];
 }
 
@@ -35,20 +49,9 @@ export interface IUserBadges {
   silver: number;
 }
 
-export interface IUserQueryParams {
-  page?: number;
-  pagesize?: number;
-
-  todate?: number;
-  fromdate?: number;
-
-  max?: number;
-  min?: number;
-
-  order?: "desc" | "asc";
+export interface IUserQueryParams extends IGenericApiQuery {
   sort?: "reputation" | "creation" | "name" | "modified";
-
-  ids: string;
+  inname: string;
 }
 
 export interface IUserStat {
