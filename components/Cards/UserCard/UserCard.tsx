@@ -19,8 +19,8 @@ const UserCard: FC<Props> = ({ user }) => {
   useEffect(() => {
     if (!user.topTags) {
       console.log("NO TAGS FOR USER", user.display_name);
-      tagsInCache[`${user.user_id}`]
-        ? setTagsFromCache(tagsInCache[`${user.user_id}`])
+      tagsInCache[user.user_id]
+        ? setTagsFromCache(tagsInCache[user.user_id])
         : setTagsFromCache([]);
     }
   }, []);
@@ -62,15 +62,19 @@ const UserCard: FC<Props> = ({ user }) => {
         </Typography>
         <div className="flex flex-wrap gap-2">
           {user.topTags &&
-            user.topTags.map((tag) => (
-              <TagButton tag={tag.name} key={Math.random() + tag.name} />
-            ))}
+            user.topTags
+              .slice(0, 5)
+              .map((tag) => (
+                <TagButton tag={tag.name} key={Math.random() + tag.name} />
+              ))}
           {/* TODO prettier implement */}
           {!user.topTags &&
             tagsFromCache &&
-            tagsFromCache.map((tag) => (
-              <TagButton tag={tag.name} key={Math.random() + tag.name} />
-            ))}
+            tagsFromCache
+              .slice(0, 6)
+              .map((tag) => (
+                <TagButton tag={tag.name} key={Math.random() + tag.name} />
+              ))}
         </div>
       </div>
     </div>

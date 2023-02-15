@@ -37,7 +37,6 @@ const UserProfilePage: NextPage<Props> = ({ user }) => {
   // TODO
   useEffect(() => {
     if (user.topTags && user.topTags.length > 0) {
-      console.log(user.topTags);
       addNewTags(user.topTags);
     }
   }, []);

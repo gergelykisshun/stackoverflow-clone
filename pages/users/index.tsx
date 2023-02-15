@@ -27,8 +27,6 @@ const AllUsersPage: NextPage<Props> = ({ users, error }) => {
         tagsToAdd = [...tagsToAdd, ...user.topTags];
       }
     });
-
-    console.log(tagsToAdd);
     addNewTags(tagsToAdd);
   }, []);
 

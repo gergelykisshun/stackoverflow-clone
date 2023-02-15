@@ -23,20 +23,24 @@ export const useTagStore = create(
       addNewTags: (tags) =>
         set(() => {
           const currentTags = get().tags;
+          const newTags = {};
+
+          console.log("CURRENT TAGS", currentTags);
 
           tags.forEach((tag) => {
             if (tag.user_id) {
-              let tagsUnderUserId = currentTags[`${tag.user_id}`];
-
-              if (tagsUnderUserId) {
-                tagsUnderUserId = [...tagsUnderUserId, tag];
+              if (currentTags[tag.user_id]) {
+                const currentArray = currentTags[tag.user_id];
+                return (currentTags[tag.user_id] = [...currentArray, tag]);
               }
 
-              tagsUnderUserId = [tag];
+              return (currentTags[tag.user_id] = [tag]);
             }
           });
 
-          return { tags: currentTags };
+          console.log("END", currentTags);
+
+          return { tags: newTags };
         }),
     }),
     {

@@ -27,7 +27,7 @@ export const getUserById = async (userId: number): Promise<IUser> => {
 
 export const getUserTagsByUserId = async (
   userId: number,
-  pagesize: number = 5
+  pagesize: number = 10
 ): Promise<ITag[]> => {
   const response = await api.get<IGenericApiResponse<ITag>>(
     `${USERSBASE_URL}/${userId}/tags`,
