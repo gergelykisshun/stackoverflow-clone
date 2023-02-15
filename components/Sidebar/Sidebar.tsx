@@ -26,9 +26,9 @@ const Sidebar: FC<Props> = () => {
       <Toolbar className="px-4">
         <DynamicFormIcon color="primary" className="mr-2" />
         <Typography variant="h6" className="cursor-pointer">
-          Overflow{" "}
-          <Typography color="primary.main" component="span" variant="h6">
-            clone
+          Flash{" "}
+          <Typography color="primary" component="span" variant="h6">
+            answers
           </Typography>
         </Typography>
       </Toolbar>

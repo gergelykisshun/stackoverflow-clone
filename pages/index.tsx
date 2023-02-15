@@ -1,8 +1,14 @@
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 export default function Home() {
   return (
     <>
-      <h1 className="text-xl text-orange-400">Welcome to Flash Answers</h1>
+      <Typography variant="h2" gutterBottom>
+        Welcome to{" "}
+        <Typography variant="h2" color="primary" component="span">
+          Flash
+        </Typography>{" "}
+        Answers
+      </Typography>
       <Button variant="contained"> Start searching </Button>
     </>
   );
