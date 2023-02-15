@@ -1,4 +1,5 @@
 import { ISidebarOption } from "@/interfaces/sidebar";
+import { useSearchStore } from "@/store/searchStore";
 import {
   ListItem,
   ListItemButton,
@@ -13,8 +14,10 @@ interface Props extends ISidebarOption {
 }
 
 const SidebarOption: FC<Props> = ({ icon, text, routeTo, isSelected }) => {
+  const resetSearchText = useSearchStore((state) => state.reset);
+
   return (
-    <Link href={routeTo}>
+    <Link href={routeTo} onClick={() => resetSearchText()}>
       <ListItem disablePadding>
         <ListItemButton className="gap-3" selected={isSelected}>
           <ListItemIcon className="min-w-0">{icon}</ListItemIcon>

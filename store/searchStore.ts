@@ -13,7 +13,7 @@ const initialState: searchState = {
   search: "",
 };
 
-const useSearchStore = create<searchState & searchActions>()((set) => ({
+export const useSearchStore = create<searchState & searchActions>()((set) => ({
   ...initialState,
   change: (search) => set((state) => ({ search })),
   reset: () => set(initialState),

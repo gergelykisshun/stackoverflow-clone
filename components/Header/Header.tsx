@@ -11,6 +11,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import SendIcon from "@mui/icons-material/Send";
 import { useRouter } from "next/router";
+import { useSearchStore } from "@/store/searchStore";
 
 type Props = {
   handleDrawerToggle: () => void;
@@ -18,7 +19,9 @@ type Props = {
 };
 
 const Header: FC<Props> = ({ drawerWidth, handleDrawerToggle }) => {
-  const [searchText, SetSearchText] = useState<string>("");
+  const searchText = useSearchStore((state) => state.search);
+  const setSearchText = useSearchStore((state) => state.change);
+
   const router = useRouter();
 
   const initSearch = () => router.push(`/search?intitle=${searchText}`);
@@ -67,7 +70,7 @@ const Header: FC<Props> = ({ drawerWidth, handleDrawerToggle }) => {
             sx={{ ml: 1, flex: 1 }}
             placeholder="Search..."
             value={searchText}
-            onChange={(e) => SetSearchText(e.target.value)}
+            onChange={(e) => setSearchText(e.target.value)}
           />
           <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
           <IconButton
