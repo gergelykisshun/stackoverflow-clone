@@ -1,12 +1,17 @@
 import { IGenericApiResponse } from "@/interfaces/generic";
 import { ITag } from "@/interfaces/tags";
-import { IUser } from "@/interfaces/users";
+import { IUser, IUserQueryParams } from "@/interfaces/users";
 import { api } from "./init";
 
 const USERSBASE_URL = "/users";
 
-export const getAllUsers = async (): Promise<IUser[]> => {
-  const response = await api.get<IGenericApiResponse<IUser>>(USERSBASE_URL);
+export const getUsersByQuery = async (
+  queryObj: IUserQueryParams
+): Promise<IUser[]> => {
+  const response = await api.get<IGenericApiResponse<IUser>>(USERSBASE_URL, {
+    params: queryObj,
+  });
+
   return response.data.items;
 };
 

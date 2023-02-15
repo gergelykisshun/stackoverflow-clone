@@ -5,7 +5,7 @@ import { api } from "./init";
 
 const SEARCH_URL = "/search";
 
-export const searchByQueries = async (
+export const searchByQuery = async (
   queryObj: ISearchQueryParams
 ): Promise<IQuestion[]> => {
   const response = await api.get<IGenericApiResponse<IQuestion>>(SEARCH_URL, {

@@ -1,10 +1,12 @@
 import React from "react";
-import { GetStaticProps, NextPage } from "next";
-import { getAllUsers, getUserTagsByUserId } from "@/axios/users";
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
+import { getUsersByQuery, getUserTagsByUserId } from "@/axios/users";
 import { Box, Typography } from "@mui/material";
-import { IUser } from "@/interfaces/users";
+import { IUser, IUserQueryParams } from "@/interfaces/users";
 import UserCard from "@/components/Cards/UserCard/UserCard";
 import Paginator from "@/components/Paginator/Paginator";
+import validateSchema from "@/schema/validateSchema";
+import { userQuerySchema } from "@/schema/user";
 
 type Props = {
   users: IUser[];
@@ -29,9 +31,22 @@ const AllUsersPage: NextPage<Props> = ({ users, error }) => {
 
 export default AllUsersPage;
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  res,
+}: GetServerSidePropsContext) => {
+  res.setHeader(
+    "Cache-control",
+    "public, s-maxage=60, stale-while-revalidate=120"
+  );
+
   try {
-    const users = await getAllUsers();
+    const userQuery = (await validateSchema(
+      query,
+      userQuerySchema
+    )) as IUserQueryParams;
+
+    const users = await getUsersByQuery(userQuery);
 
     const usersWithTags = await Promise.all(
       users.map(async (user) => {
@@ -44,10 +59,16 @@ export const getStaticProps: GetStaticProps = async () => {
       })
     );
 
-    return { props: { users: usersWithTags }, revalidate: 60 };
-  } catch (e) {
+    return { props: { users: usersWithTags } };
+  } catch (e: any) {
     return {
-      props: { users: [], error: "Sorry! Could not fetch users!" },
+      props: {
+        questions: [],
+        error:
+          e.response?.data.error_message || e.details?.length > 0
+            ? e.details[0].message
+            : "Sorry something went wrong!",
+      },
     };
   }
 };

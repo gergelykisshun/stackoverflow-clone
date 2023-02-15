@@ -1,4 +1,4 @@
-import { searchByQueries } from "@/axios/search";
+import { searchByQuery } from "@/axios/search";
 import QuestionCard from "@/components/Cards/QuestionCard/QuestionCard";
 import { IQuestion } from "@/interfaces/question";
 import { Box, Typography } from "@mui/material";
@@ -8,6 +8,7 @@ import Joi from "joi";
 import { searchQuerySchema } from "@/schema/search";
 import { ISearchQueryParams } from "@/interfaces/search";
 import Paginator from "@/components/Paginator/Paginator";
+import validateSchema from "@/schema/validateSchema";
 
 type Props = {
   questions: IQuestion[];
@@ -50,12 +51,12 @@ export const getServerSideProps: GetServerSideProps = async ({
   }
 
   try {
-    const searchQuery = Joi.attempt(
+    const searchQuery = (await validateSchema(
       query,
       searchQuerySchema
-    ) as ISearchQueryParams;
+    )) as ISearchQueryParams;
 
-    const questions: IQuestion[] = await searchByQueries(searchQuery);
+    const questions: IQuestion[] = await searchByQuery(searchQuery);
     return { props: { questions } };
     // TODO remove any
   } catch (e: any) {

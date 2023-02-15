@@ -1,11 +1,13 @@
 import React from "react";
-import { GetStaticProps, NextPage } from "next";
-import { getAllQuestions } from "@/axios/questions";
-import { IQuestion } from "@/interfaces/question";
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
+import { getQuestionsByQuery } from "@/axios/questions";
+import { IQuestion, IQuestionQueryParams } from "@/interfaces/question";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import QuestionCard from "@/components/Cards/QuestionCard/QuestionCard";
 import Paginator from "@/components/Paginator/Paginator";
+import validateSchema from "@/schema/validateSchema";
+import { questionQuerySchema } from "@/schema/question";
 
 type Props = {
   questions: IQuestion[];
@@ -29,13 +31,32 @@ const AllQuestionsPage: NextPage<Props> = ({ questions, error }) => {
 
 export default AllQuestionsPage;
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  res,
+}: GetServerSidePropsContext) => {
+  res.setHeader(
+    "Cache-control",
+    "public, s-maxage=60, stale-while-revalidate=120"
+  );
+
   try {
-    const questions = await getAllQuestions();
-    return { props: { questions }, revalidate: 60 };
-  } catch (e) {
+    const questionQuery = (await validateSchema(
+      query,
+      questionQuerySchema
+    )) as IQuestionQueryParams;
+
+    const questions: IQuestion[] = await getQuestionsByQuery(questionQuery);
+    return { props: { questions } };
+  } catch (e: any) {
     return {
-      props: { questions: [], error: "Sorry! Could not fetch questions!" },
+      props: {
+        questions: [],
+        error:
+          e.response?.data.error_message || e.details?.length > 0
+            ? e.details[0].message
+            : "Sorry something went wrong!",
+      },
     };
   }
 };

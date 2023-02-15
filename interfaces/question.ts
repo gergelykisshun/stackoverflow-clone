@@ -23,9 +23,4 @@ export interface IQuestionOwner {
   link: string;
 }
 
-export interface IQuestionApiResponse {
-  items: IQuestion[];
-  has_more: boolean;
-  quota_max: number;
-  quota_remaining: number;
-}
+export interface IQuestionQueryParams {}
