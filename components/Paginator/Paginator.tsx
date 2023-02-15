@@ -10,6 +10,7 @@ const Paginator: FC<Props> = ({ isCentered }) => {
   const router = useRouter();
   const query = router.query;
   const currentPath = router.asPath;
+  const queryCount = Object.keys(query).length;
 
   return (
     <Box className={`${isCentered ? "flex justify-center" : ""} mt-5`}>
@@ -22,7 +23,7 @@ const Paginator: FC<Props> = ({ isCentered }) => {
           router.push(
             currentPath.includes("page")
               ? currentPath.replace(`page=${query.page}`, `page=${newPage}`)
-              : `${currentPath}&page=${newPage}`
+              : `${currentPath}${queryCount ? "&" : "?"}page=${newPage}`
           )
         }
       />
