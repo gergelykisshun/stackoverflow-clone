@@ -16,7 +16,7 @@ const QuestionCard: FC<Props> = ({ question }) => {
   const owner = question.owner;
 
   const [ownerImage, onImageError] = useDefaultImageOnError(
-    owner.profile_image
+    owner?.profile_image || ""
   );
 
   return (
@@ -57,25 +57,29 @@ const QuestionCard: FC<Props> = ({ question }) => {
             ))}
           </ButtonGroup>
           {/* owner */}
-          <Link
-            className="flex flex-wrap gap-2"
-            href={`/users/${owner.user_id}`}
-          >
-            <img
-              className="w-5 h-5 object-cover rounded-sm"
-              src={ownerImage}
-              onError={onImageError}
-              alt=""
-            />
-            <Typography color="primary">{owner.display_name}</Typography>
-            <Typography
-              color="warning.main"
-              variant="button"
-              className="text-xs flex items-center"
+          {owner && (
+            <Link
+              className="flex flex-wrap gap-2"
+              href={`${
+                owner.user_id ? `/users/${owner.user_id}` : owner.link || ""
+              }}`}
             >
-              reputation: {owner.reputation}
-            </Typography>
-          </Link>
+              <img
+                className="w-5 h-5 object-cover rounded-sm"
+                src={ownerImage}
+                onError={onImageError}
+                alt=""
+              />
+              <Typography color="primary">{owner.display_name}</Typography>
+              <Typography
+                color="warning.main"
+                variant="button"
+                className="text-xs flex items-center"
+              >
+                reputation: {owner.reputation}
+              </Typography>
+            </Link>
+          )}
         </div>
       </div>
       <Divider variant="middle" className="mb-3 max-w-3xl" />

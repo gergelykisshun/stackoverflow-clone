@@ -24,7 +24,7 @@ const UserProfilePage: NextPage<Props> = ({ user }) => {
 
   const userStats: IUserStat[] = [
     { count: user.reputation, text: "reputation" },
-    { count: user.accept_rate, text: "accept rate" },
+    { count: user.accept_rate || 0, text: "accept rate" },
     {
       count: user.reputation_change_month,
       text: "reputation this month",
