@@ -1,15 +1,20 @@
 import { searchByQueries } from "@/axios/search";
 import QuestionCard from "@/components/Cards/QuestionCard/QuestionCard";
 import { IQuestion } from "@/interfaces/question";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
 
 type Props = {
   questions: IQuestion[];
+  error?: string;
 };
 
-const SearchPage: NextPage<Props> = ({ questions }) => {
+const SearchPage: NextPage<Props> = ({ questions, error }) => {
+  if (error) {
+    return <Typography variant="h6">{error}</Typography>;
+  }
+
   return (
     <Box className="grid grid-cols-1">
       {questions.map((question) => (
@@ -23,16 +28,26 @@ export default SearchPage;
 
 export const getServerSideProps: GetServerSideProps = async ({
   query,
+  res,
 }: GetServerSidePropsContext) => {
-  const intitle = query.intitle ? query.intitle : "";
+  res.setHeader(
+    "Cache-control",
+    "public, s-maxage=60, stale-while-revalidate=120"
+  );
 
-  const questions: IQuestion[] = await searchByQueries({
-    // TODO
-    intitle: intitle as string,
-    order: "desc",
-    sort: "activity",
-    tagged: "",
-  });
+  if (!query.intitle && !query.tagged) {
+    return {
+      props: {
+        questions: [],
+        error: "One of intitle or tagged must be set to search!",
+      },
+    };
+  }
 
-  return { props: { questions } };
+  try {
+    const questions: IQuestion[] = await searchByQueries(query);
+    return { props: { questions } };
+  } catch (e: any) {
+    return { props: { questions: [], error: e.response.data.error_message } };
+  }
 };

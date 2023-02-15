@@ -111,7 +111,7 @@ const UserProfilePage: NextPage<Props> = ({ user }) => {
               elevation={3}
             >
               {userStats.map((userStat) => (
-                <UserStats {...userStat} />
+                <UserStats key={userStat.text} {...userStat} />
               ))}
             </Paper>
           </div>

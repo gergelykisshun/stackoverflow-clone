@@ -9,7 +9,7 @@ type Props = {
 const TagButton: FC<Props> = ({ tag, size }) => {
   return (
     <Link
-      href={`/question/${tag}`}
+      href={`/search?tagged=${tag}`}
       className={`py-1 px-2 font-light ${
         size || "text-xs"
       } bg-gray-200 rounded-sm hover:bg-gray-300 transition-all whitespace-nowrap`}
