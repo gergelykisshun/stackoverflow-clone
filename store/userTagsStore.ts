@@ -1,0 +1,41 @@
+import { ITag } from "@/interfaces/tags";
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+
+interface TagsState {
+  tags: TagRecord;
+}
+
+type TagRecord = Record<number, ITag>;
+
+interface TagsActions {
+  addNewTags: (tags: ITag[]) => void;
+}
+
+const initialState: TagsState = {
+  tags: {},
+};
+
+export const useTagStore = create(
+  persist<TagsState & TagsActions>(
+    (set, get) => ({
+      ...initialState,
+      addNewTags: (tags) =>
+        set(() => {
+          const currentTags = get().tags;
+
+          tags.forEach((tag) => {
+            if (tag.user_id) {
+              currentTags[`${tag.user_id}`] = tag;
+            }
+          });
+
+          return { tags: currentTags };
+        }),
+    }),
+    {
+      name: "user-tags",
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+);
