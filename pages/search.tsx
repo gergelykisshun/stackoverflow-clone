@@ -7,6 +7,7 @@ import React from "react";
 import Joi from "joi";
 import { searchQuerySchema } from "@/schema/search";
 import { ISearchQueryParams } from "@/interfaces/search";
+import Paginator from "@/components/Paginator/Paginator";
 
 type Props = {
   questions: IQuestion[];
@@ -23,6 +24,7 @@ const SearchPage: NextPage<Props> = ({ questions, error }) => {
       {questions.map((question) => (
         <QuestionCard key={question.question_id} question={question} />
       ))}
+      <Paginator />
     </Box>
   );
 };
@@ -55,6 +57,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
     const questions: IQuestion[] = await searchByQueries(searchQuery);
     return { props: { questions } };
+    // TODO remove any
   } catch (e: any) {
     return {
       props: {

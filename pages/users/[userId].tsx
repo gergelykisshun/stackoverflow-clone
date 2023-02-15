@@ -167,8 +167,13 @@ const UserProfilePage: NextPage<Props> = ({ user }) => {
 export default UserProfilePage;
 
 export const getServerSideProps: GetServerSideProps = async ({
-  params,
+  params, res
 }: GetServerSidePropsContext) => {
+  res.setHeader(
+    "Cache-control",
+    "public, s-maxage=60, stale-while-revalidate=120"
+  );
+
   const userId = params?.userId;
 
   if (userId) {

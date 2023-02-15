@@ -5,6 +5,7 @@ import { IQuestion } from "@/interfaces/question";
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import QuestionCard from "@/components/Cards/QuestionCard/QuestionCard";
+import Paginator from "@/components/Paginator/Paginator";
 
 type Props = {
   questions: IQuestion[];
@@ -21,6 +22,7 @@ const AllQuestionsPage: NextPage<Props> = ({ questions, error }) => {
       {questions.map((question) => (
         <QuestionCard key={question.question_id} question={question} />
       ))}
+      <Paginator />
     </Box>
   );
 };

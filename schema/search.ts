@@ -1,8 +1,8 @@
 import Joi from "joi";
 
 export const searchQuerySchema = Joi.object({
-  page: Joi.number().optional(),
-  pagesize: Joi.number().optional(),
+  page: Joi.number().min(1).optional(),
+  pagesize: Joi.number().min(1).max(100).optional(),
   todate: Joi.number().optional(),
   fromdate: Joi.number().optional(),
   max: Joi.number().optional(),

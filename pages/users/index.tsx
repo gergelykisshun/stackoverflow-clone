@@ -4,6 +4,7 @@ import { getAllUsers, getUserTagsByUserId } from "@/axios/users";
 import { Box, Typography } from "@mui/material";
 import { IUser } from "@/interfaces/users";
 import UserCard from "@/components/Cards/UserCard/UserCard";
+import Paginator from "@/components/Paginator/Paginator";
 
 type Props = {
   users: IUser[];
@@ -15,11 +16,14 @@ const AllUsersPage: NextPage<Props> = ({ users, error }) => {
     return <Typography variant="h6">{error}</Typography>;
   }
   return (
-    <Box className="grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-      {users.map((user) => (
-        <UserCard key={user.account_id} user={user} />
-      ))}
-    </Box>
+    <>
+      <Box className="grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        {users.map((user) => (
+          <UserCard key={user.account_id} user={user} />
+        ))}
+      </Box>
+      <Paginator isCentered />
+    </>
   );
 };
 
