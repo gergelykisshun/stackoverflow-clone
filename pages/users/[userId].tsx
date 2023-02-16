@@ -70,14 +70,16 @@ const UserProfilePage: NextPage<Props> = ({ user, error }) => {
             {`Member for ${durationFromEpochUntilNow(user.creation_date)}`}
           </Typography>
 
-          <Typography
-            variant="body2"
-            className={mutedDetailsSharedStyle}
-            color="text.secondary"
-          >
-            <LocationOnIcon className="pb-0.5" />
-            {user.location}
-          </Typography>
+          {user.location && (
+            <Typography
+              variant="body2"
+              className={mutedDetailsSharedStyle}
+              color="text.secondary"
+            >
+              <LocationOnIcon className="pb-0.5" />
+              {user.location}
+            </Typography>
+          )}
 
           {user.website_url && (
             <Link href={user.website_url} target="_blank">
@@ -157,23 +159,25 @@ const UserProfilePage: NextPage<Props> = ({ user, error }) => {
             </div>
           </div>
 
-          <div>
-            <Typography
-              variant="h6"
-              className="font-normal"
-              color="primary.main"
-              gutterBottom
-            >
-              Top 10 tags
-            </Typography>
-            {loading ? (
-              <TableSkeleton rows={10} />
-            ) : (
-              <div className="max-w-xl mx-auto">
-                <TopTagsTable tags={tagsOfUser} />
-              </div>
-            )}
-          </div>
+          {tagsOfUser.length > 0 && (
+            <div>
+              <Typography
+                variant="h6"
+                className="font-normal"
+                color="primary.main"
+                gutterBottom
+              >
+                Top 10 tags
+              </Typography>
+              {loading ? (
+                <TableSkeleton rows={10} />
+              ) : (
+                <div className="max-w-xl mx-auto">
+                  <TopTagsTable tags={tagsOfUser} />
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
