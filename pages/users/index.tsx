@@ -46,6 +46,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     "Cache-control",
     "public, s-maxage=60, stale-while-revalidate=120"
   );
+  res.setHeader("Accept-Encoding", "deflate, gzip");
 
   try {
     const userQuery = (await validateSchema(

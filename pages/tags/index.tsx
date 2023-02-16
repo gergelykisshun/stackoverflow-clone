@@ -57,6 +57,7 @@ export const getServerSideProps: GetServerSideProps = async ({
     "Cache-control",
     `public, s-maxage=${process.env.SSR_CACHE_MAX_AGE}, stale-while-revalidate=${process.env.SSR_CACHE_REVALIDATE}`
   );
+  res.setHeader("Accept-Encoding", "deflate, gzip");
 
   try {
     const tagQuery = (await validateSchema(
