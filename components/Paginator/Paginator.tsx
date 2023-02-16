@@ -13,7 +13,7 @@ const Paginator: FC<Props> = ({ isCentered }) => {
   const currentPath = router.asPath;
 
   return (
-    <Box className={`${isCentered ? "flex justify-center" : ""} mt-5`}>
+    <Box className={`${isCentered ? "flex justify-center " : ""} mt-5`}>
       <Pagination
         sx={{ size: { xs: "small", md: "medium" } }}
         count={100}

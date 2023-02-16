@@ -31,8 +31,8 @@ const AllQuestionsPage: NextPage<Props> = ({ questions, error }) => {
         {questions.map((question) => (
           <QuestionCard key={question.question_id} question={question} />
         ))}
-        <Paginator isCentered />
       </Box>
+      <Paginator isCentered />
     </>
   );
 };
