@@ -1,3 +1,4 @@
+import getPathToPushWithNewQuery from "@/utility/addQuery";
 import { Pagination, Box } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { FC } from "react";
@@ -10,7 +11,6 @@ const Paginator: FC<Props> = ({ isCentered }) => {
   const router = useRouter();
   const query = router.query;
   const currentPath = router.asPath;
-  const queryCount = Object.keys(query).length;
 
   return (
     <Box className={`${isCentered ? "flex justify-center" : ""} mt-5`}>
@@ -21,9 +21,7 @@ const Paginator: FC<Props> = ({ isCentered }) => {
         color="primary"
         onChange={(e, newPage) =>
           router.push(
-            currentPath.includes("page")
-              ? currentPath.replace(`page=${query.page}`, `page=${newPage}`)
-              : `${currentPath}${queryCount ? "&" : "?"}page=${newPage}`
+            getPathToPushWithNewQuery(query, "page", newPage, currentPath)
           )
         }
       />
