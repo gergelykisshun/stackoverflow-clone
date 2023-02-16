@@ -54,9 +54,11 @@ const UserCard: FC<Props> = ({ user }) => {
         <div className="flex flex-wrap gap-2">
           {loading
             ? new Array(5).fill(0).map((el, i) => <ButtonSkeleton key={i} />)
-            : tagsOfUser.map((tag) => (
-                <TagButton tag={tag.name} key={Math.random() + tag.name} />
-              ))}
+            : tagsOfUser
+                .slice(0, 5)
+                .map((tag) => (
+                  <TagButton tag={tag.name} key={Math.random() + tag.name} />
+                ))}
         </div>
       </div>
     </div>

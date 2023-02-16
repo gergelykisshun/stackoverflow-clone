@@ -159,25 +159,23 @@ const UserProfilePage: NextPage<Props> = ({ user, error }) => {
             </div>
           </div>
 
-          {tagsOfUser.length > 0 && (
-            <div>
-              <Typography
-                variant="h6"
-                className="font-normal"
-                color="primary.main"
-                gutterBottom
-              >
-                Top 10 tags
-              </Typography>
-              {loading ? (
-                <TableSkeleton rows={10} />
-              ) : (
-                <div className="max-w-xl mx-auto">
-                  <TopTagsTable tags={tagsOfUser} />
-                </div>
-              )}
-            </div>
-          )}
+          <div>
+            <Typography
+              variant="h6"
+              className="font-normal"
+              color="primary.main"
+              gutterBottom
+            >
+              Top 10 tags
+            </Typography>
+            {loading ? (
+              <TableSkeleton rows={10} />
+            ) : (
+              <div className="max-w-xl mx-auto">
+                <TopTagsTable tags={tagsOfUser} />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
