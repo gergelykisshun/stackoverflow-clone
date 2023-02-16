@@ -2,7 +2,7 @@ import { getQuestionsByQuery } from "@/axios/questions";
 import { getTagsByQuery } from "@/axios/tags";
 import { getUsersByQuery } from "@/axios/users";
 import QuestionCard from "@/components/Cards/QuestionCard/QuestionCard";
-import UserCard from "@/components/Cards/UserCard/UserCard";
+import UserPreview from "@/components/Cards/UserPreview/UserPreview";
 import TopTagsTable from "@/components/Tables/TopTagsTable";
 import { IQuestion } from "@/interfaces/question";
 import { ITag } from "@/interfaces/tags";
@@ -54,10 +54,9 @@ const Home: NextPage<Props> = ({ questions, tags, users }) => {
             Community
           </Typography>
 
-          <Box className="flex justify-center gap-5 flex-wrap mt-5">
+          <Box className="flex justify-center gap-7 flex-wrap mt-5">
             {users.map((user) => (
-              // TODO different card here
-              <UserCard key={user.account_id} user={user} />
+              <UserPreview key={user.account_id} user={user} />
             ))}
           </Box>
         </Box>
