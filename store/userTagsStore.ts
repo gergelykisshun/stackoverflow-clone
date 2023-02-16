@@ -40,7 +40,7 @@ export const useTagStore = create(
 
           console.log("END", currentTags);
 
-          return { tags: newTags };
+          return { tags: { ...currentTags } };
         }),
     }),
     {

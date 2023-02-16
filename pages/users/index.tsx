@@ -1,14 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
-import { getUsersByQuery, getUserTagsByUserId } from "@/axios/users";
+import { getUsersByQuery } from "@/axios/users";
 import { Box, Typography } from "@mui/material";
 import { IUser, IUserQueryParams } from "@/interfaces/users";
 import UserCard from "@/components/Cards/UserCard/UserCard";
 import Paginator from "@/components/Paginator/Paginator";
 import validateSchema from "@/schema/validateSchema";
 import { userQuerySchema } from "@/schema/user";
-import { useTagStore } from "@/store/userTagsStore";
-import { ITag } from "@/interfaces/tags";
 
 type Props = {
   users: IUser[];
@@ -16,20 +14,6 @@ type Props = {
 };
 
 const AllUsersPage: NextPage<Props> = ({ users, error }) => {
-  const addNewTags = useTagStore((state) => state.addNewTags);
-
-  // TODO
-  useEffect(() => {
-    let tagsToAdd: ITag[] = [];
-
-    users.forEach((user) => {
-      if (user.topTags && user.topTags.length > 0) {
-        tagsToAdd = [...tagsToAdd, ...user.topTags];
-      }
-    });
-    addNewTags(tagsToAdd);
-  }, []);
-
   if (error) {
     return <Typography variant="h6">{error}</Typography>;
   }
@@ -64,22 +48,11 @@ export const getServerSideProps: GetServerSideProps = async ({
 
     const users = await getUsersByQuery(userQuery);
 
-    const usersWithTags = await Promise.all(
-      users.map(async (user) => {
-        try {
-          const topTags = await getUserTagsByUserId(user.user_id);
-          return { ...user, topTags };
-        } catch (e) {
-          return user;
-        }
-      })
-    );
-
-    return { props: { users: usersWithTags } };
+    return { props: { users } };
   } catch (e: any) {
     return {
       props: {
-        questions: [],
+        users: [],
         error:
           e.response?.data.error_message || e.details?.length > 0
             ? e.details[0].message
