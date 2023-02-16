@@ -62,7 +62,7 @@ const QuestionCard: FC<Props> = ({ question }) => {
               className="flex flex-wrap items-center gap-2"
               href={`${
                 owner.user_id ? `/users/${owner.user_id}` : owner.link || ""
-              }}`}
+              }`}
             >
               <img
                 className="w-5 h-5 object-cover rounded-sm"
