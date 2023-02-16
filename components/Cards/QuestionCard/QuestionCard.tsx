@@ -59,7 +59,7 @@ const QuestionCard: FC<Props> = ({ question }) => {
           {/* owner */}
           {owner && (
             <Link
-              className="flex flex-wrap gap-2"
+              className="flex flex-wrap items-center gap-2"
               href={`${
                 owner.user_id ? `/users/${owner.user_id}` : owner.link || ""
               }}`}
@@ -70,7 +70,9 @@ const QuestionCard: FC<Props> = ({ question }) => {
                 onError={onImageError}
                 alt=""
               />
-              <Typography color="primary">{owner.display_name}</Typography>
+              <Typography color="primary" className="leading-4">
+                {owner.display_name}
+              </Typography>
               <Typography
                 color="warning.main"
                 variant="button"
