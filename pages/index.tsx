@@ -29,7 +29,7 @@ const Home: NextPage<Props> = ({ questions, tags, users }) => {
         </Typography>
         <Typography>Powered by Stack Exchange API</Typography>
       </Box>
-      <Box className="grid grid-cols-1 lg:grid-cols-2 space-x-5">
+      <Box className="grid grid-cols-1 lg:grid-cols-2 space-x-7">
         <Box>
           <Typography
             variant="h4"
@@ -54,7 +54,7 @@ const Home: NextPage<Props> = ({ questions, tags, users }) => {
             Community
           </Typography>
 
-          <Box className="flex justify-center gap-7 flex-wrap mt-5">
+          <Box className="flex flex-wrap justify-center gap-10 mt-5">
             {users.map((user) => (
               <UserPreview key={user.account_id} user={user} />
             ))}
@@ -95,7 +95,7 @@ export const getStaticProps: GetStaticProps = async () => {
   }
 
   try {
-    users = await getUsersByQuery({ pagesize: 5 });
+    users = await getUsersByQuery({ pagesize: 4 });
   } catch (e) {
     console.log("Fetching users failed!");
   }

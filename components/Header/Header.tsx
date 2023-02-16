@@ -29,6 +29,7 @@ const Header: FC<Props> = ({ drawerWidth, handleDrawerToggle }) => {
   return (
     <AppBar
       position="fixed"
+      className="right-0"
       sx={{
         width: { sm: `calc(100% - ${drawerWidth}px)` },
         ml: { sm: `${drawerWidth}px` },

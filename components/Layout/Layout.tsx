@@ -37,7 +37,7 @@ const Layout: FC<Props> = ({ children }) => {
   }, [router]);
 
   return (
-    <Box className="flex">
+    <Box className="flex  max-w-[1536px] mx-auto">
       <CssBaseline />
       <Header
         drawerWidth={drawerWidth}
