@@ -6,7 +6,6 @@ import { useCallback, useEffect, useState } from "react";
 
 const useGetTopTagsOfUser = (
   user: IUser,
-
   numberOfTags: number = 5
 ): [ITag[], boolean] => {
   const tagsInCache = useTagStore((state) => state.tags);
@@ -14,35 +13,32 @@ const useGetTopTagsOfUser = (
   const [tagsOfUser, setTagsOfUser] = useState<ITag[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  console.log("WHAT IS THIS FUNC", addNewTags);
-
   const fetchTagsOfUser = useCallback(async () => {
-    try {
-      const topTags = await getUserTagsByUserId(user.user_id, numberOfTags);
-      addNewTags(topTags);
-      setTagsOfUser(topTags);
-    } catch (e) {
-      console.log("Failed to fetch tags!");
-      console.log(e);
+    console.log("USERID", user.user_id);
+    if (user.user_id) {
+      try {
+        console.log("START FETCH");
+        const topTags = await getUserTagsByUserId(user.user_id, numberOfTags);
+        console.log("TAGS", topTags);
+        addNewTags(topTags);
+        setTagsOfUser(topTags);
+      } catch (e) {
+        console.log("Failed to fetch tags!");
+      }
     }
-  }, [addNewTags]);
+    setLoading(false);
+  }, [addNewTags, user]);
 
   useEffect(() => {
-    if (loading) {
-      console.log("USE EFFECT START");
-      console.log("TAGS IN CACHE", tagsInCache);
+    if (loading && user.user_id) {
       if (tagsInCache[user.user_id]) {
-        // TODO EXPIRY
-        console.log("TAGS FROM STORE");
         setTagsOfUser(tagsInCache[user.user_id]);
+        setLoading(false);
       } else {
-        console.log("TAGS FETCHED");
         fetchTagsOfUser();
       }
-      console.log("Loading to false");
-      setLoading(false);
     }
-  }, []);
+  }, [user]);
 
   return [tagsOfUser, loading];
 };

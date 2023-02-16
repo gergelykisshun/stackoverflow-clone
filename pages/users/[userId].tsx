@@ -13,9 +13,9 @@ import epochToDate from "@/utility/epochToDate";
 import BadgeCard from "@/components/Cards/BadgeCard/BadgeCard";
 import UserTopTagsTable from "@/components/Tables/UserTopTagsTable";
 import UserStats from "@/components/UserStats/UserStats";
-import useGetTopTagsOfUser from "@/hooks/useGetTopTagsOfUser";
 import TableSkeleton from "@/components/Skeletons/TableSkeleton/TableSkeleton";
-import { useTagStore } from "@/store/userTagsStore";
+
+import useGetTopTagsOfUser from "@/hooks/useGetTopTagsOfUser";
 
 type Props = {
   user: IUser;

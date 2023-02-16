@@ -23,7 +23,6 @@ export const useTagStore = create(
       addNewTags: (tags) =>
         set(() => {
           const currentTags = get().tags;
-          const newTags = {};
 
           console.log("CURRENT TAGS", currentTags);
 
