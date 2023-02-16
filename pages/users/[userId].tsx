@@ -11,7 +11,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import InsertLinkIcon from "@mui/icons-material/InsertLink";
 import epochToDate from "@/utility/epochToDate";
 import BadgeCard from "@/components/Cards/BadgeCard/BadgeCard";
-import UserTopTagsTable from "@/components/Tables/UserTopTagsTable";
+import TopTagsTable from "@/components/Tables/TopTagsTable";
 import UserStats from "@/components/UserStats/UserStats";
 import TableSkeleton from "@/components/Skeletons/TableSkeleton/TableSkeleton";
 
@@ -170,7 +170,7 @@ const UserProfilePage: NextPage<Props> = ({ user, error }) => {
               <TableSkeleton rows={10} />
             ) : (
               <div className="max-w-xl mx-auto">
-                <UserTopTagsTable tags={tagsOfUser} />
+                <TopTagsTable tags={tagsOfUser} />
               </div>
             )}
           </div>

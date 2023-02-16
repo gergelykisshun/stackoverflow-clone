@@ -10,6 +10,7 @@ import QuizIcon from "@mui/icons-material/Quiz";
 import SidebarOption from "../SidebarOption/SidebarOption";
 import { useRouter } from "next/router";
 import { ISidebarOption } from "@/interfaces/sidebar";
+import Link from "next/link";
 
 type Props = {};
 
@@ -23,15 +24,17 @@ const Sidebar: FC<Props> = () => {
 
   return (
     <div>
-      <Toolbar className="px-4">
-        <DynamicFormIcon color="primary" className="mr-2" />
-        <Typography variant="h6" className="cursor-pointer">
-          Flash{" "}
-          <Typography color="primary" component="span" variant="h6">
-            answers
+      <Link href={"/"}>
+        <Toolbar className="px-4">
+          <DynamicFormIcon color="primary" className="mr-2" />
+          <Typography variant="h6" className="cursor-pointer">
+            Flash{" "}
+            <Typography color="primary" component="span" variant="h6">
+              answers
+            </Typography>
           </Typography>
-        </Typography>
-      </Toolbar>
+        </Toolbar>
+      </Link>
       <Divider />
       <List>
         {sidebarOptions.map((option) => (

@@ -51,7 +51,7 @@ export interface IUserBadges {
 
 export interface IUserQueryParams extends IGenericApiQuery {
   sort?: "reputation" | "creation" | "name" | "modified";
-  inname: string;
+  inname?: string;
 }
 
 export interface IUserStat {

@@ -14,7 +14,7 @@ type Props = {
   tags: ITag[];
 };
 
-const UserTopTagsTable: FC<Props> = ({ tags }) => {
+const TopTagsTable: FC<Props> = ({ tags }) => {
   const rows = tags.map((tag) => ({ tag: tag.name, count: tag.count }));
   return (
     <TableContainer component={Paper}>
@@ -34,4 +34,4 @@ const UserTopTagsTable: FC<Props> = ({ tags }) => {
   );
 };
 
-export default UserTopTagsTable;
+export default TopTagsTable;
