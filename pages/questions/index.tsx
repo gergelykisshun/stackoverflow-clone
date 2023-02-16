@@ -24,7 +24,7 @@ const AllQuestionsPage: NextPage<Props> = ({ questions, error }) => {
       {questions.map((question) => (
         <QuestionCard key={question.question_id} question={question} />
       ))}
-      <Paginator />
+      <Paginator isCentered />
     </Box>
   );
 };
