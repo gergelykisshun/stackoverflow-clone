@@ -7,8 +7,11 @@ const getPathToPushWithNewQuery = (
   const queryCount = Object.keys(query).length;
 
   return currentPath.includes(queryString)
-    ? currentPath.replace(`page=${query[queryString]}`, `page=${queryValue}`)
-    : `${currentPath}${queryCount ? "&" : "?"}page=${queryValue}`;
+    ? currentPath.replace(
+        `${queryString}=${query[queryString]}`,
+        `${queryString}=${queryValue}`
+      )
+    : `${currentPath}${queryCount ? "&" : "?"}${queryString}=${queryValue}`;
 };
 
 export default getPathToPushWithNewQuery;

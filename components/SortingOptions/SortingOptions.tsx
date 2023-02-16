@@ -1,4 +1,5 @@
-import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import getPathToPushWithNewQuery from "@/utility/getPathToPushWithNewQuery";
+import { Box, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { FC, useState } from "react";
 
@@ -16,21 +17,35 @@ const SortingOptions: FC<Props> = ({ defaultOption, sortOptions }) => {
     newSelection: string
   ) => {
     setSelected(newSelection);
+    router.push(
+      getPathToPushWithNewQuery(
+        router.query,
+        "sort",
+        newSelection,
+        router.asPath
+      )
+    );
   };
 
   return (
-    <ToggleButtonGroup
-      value={selected}
-      exclusive
-      onChange={handleChange}
-      aria-label="sorting options"
-    >
-      {sortOptions.map((option) => (
-        <ToggleButton key={option} value={option}>
-          {option}
-        </ToggleButton>
-      ))}
-    </ToggleButtonGroup>
+    <Box className="mt-5 mb-10 flex xs:justify-center sm:justify-end">
+      <ToggleButtonGroup
+        value={selected}
+        exclusive
+        onChange={handleChange}
+        aria-label="sorting options"
+      >
+        {sortOptions.map((option) => (
+          <ToggleButton
+            className="text-xs md:text-sm"
+            key={option}
+            value={option}
+          >
+            {option}
+          </ToggleButton>
+        ))}
+      </ToggleButtonGroup>
+    </Box>
   );
 };
 

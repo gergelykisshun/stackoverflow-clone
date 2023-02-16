@@ -1,4 +1,4 @@
-import getPathToPushWithNewQuery from "@/utility/addQuery";
+import getPathToPushWithNewQuery from "@/utility/getPathToPushWithNewQuery";
 import { Pagination, Box } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { FC } from "react";

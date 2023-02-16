@@ -7,6 +7,8 @@ import UserCard from "@/components/Cards/UserCard/UserCard";
 import Paginator from "@/components/Paginator/Paginator";
 import validateSchema from "@/schema/validateSchema";
 import { userQuerySchema } from "@/schema/user";
+import SortingOptions from "@/components/SortingOptions/SortingOptions";
+import { UserSortOptions } from "@/enums/user";
 
 type Props = {
   users: IUser[];
@@ -19,6 +21,11 @@ const AllUsersPage: NextPage<Props> = ({ users, error }) => {
   }
   return (
     <>
+      <SortingOptions
+        sortOptions={Object.values(UserSortOptions)}
+        defaultOption={UserSortOptions.REPUTATION}
+      />
+
       <Box className="grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         {users.map((user) => (
           <UserCard key={user.account_id} user={user} />
