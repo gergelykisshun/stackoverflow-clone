@@ -14,8 +14,6 @@ type Props = {
 const UserCard: FC<Props> = ({ user }) => {
   const [ownerImage, onImageError] = useDefaultImageOnError(user.profile_image);
 
-  const [tagsOfUser, loading] = useGetTopTagsOfUser(user);
-
   return (
     <div className="flex gap-2 w-[265px] mx-auto">
       <img
@@ -51,15 +49,6 @@ const UserCard: FC<Props> = ({ user }) => {
         >
           reputation: {user.reputation}
         </Typography>
-        <div className="flex flex-wrap gap-2">
-          {loading
-            ? new Array(5).fill(0).map((el, i) => <ButtonSkeleton key={i} />)
-            : tagsOfUser
-                .slice(0, 5)
-                .map((tag) => (
-                  <TagButton tag={tag.name} key={Math.random() + tag.name} />
-                ))}
-        </div>
       </div>
     </div>
   );
