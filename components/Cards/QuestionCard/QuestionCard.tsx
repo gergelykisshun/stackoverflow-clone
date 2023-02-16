@@ -44,7 +44,7 @@ const QuestionCard: FC<Props> = ({ question }) => {
             <Typography
               color="primary.main"
               variant="body1"
-              className="font-semibold max-w-xl"
+              className="font-normal text-base lg:text-lg max-w-xl"
               gutterBottom
             >
               {decodeSpecialChars(question.title)}

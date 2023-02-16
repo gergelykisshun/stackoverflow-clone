@@ -32,8 +32,8 @@ const Home: NextPage<Props> = ({ questions, tags, users }) => {
       <Box className="grid grid-cols-1 lg:grid-cols-2 space-x-5">
         <Box>
           <Typography
-            variant="h6"
-            className="font-normal"
+            variant="h4"
+            className="font-light"
             color="primary.main"
             gutterBottom
           >
@@ -46,8 +46,8 @@ const Home: NextPage<Props> = ({ questions, tags, users }) => {
         </Box>
         <Box className="mt-10 lg:mt-0">
           <Typography
-            variant="h6"
-            className="font-normal"
+            variant="h4"
+            className="font-light"
             color="primary.main"
             gutterBottom
           >
@@ -63,8 +63,8 @@ const Home: NextPage<Props> = ({ questions, tags, users }) => {
       </Box>
       <Box className="mt-10 mx-auto max-w-2xl">
         <Typography
-          variant="h6"
-          className="font-normal"
+          variant="h4"
+          className="font-light"
           color="primary.main"
           gutterBottom
         >
