@@ -14,14 +14,9 @@ const useGetTopTagsOfUser = (
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchTagsOfUser = useCallback(async () => {
-    console.log("USERID", user.user_id);
     if (user.user_id) {
       try {
-        console.log("START FETCH");
-        // TODO
-        // const topTags = await getUserTagsByUserId(user.user_id, numberOfTags);
-        const topTags: ITag[] = [];
-        console.log("TAGS", topTags);
+        const topTags = await getUserTagsByUserId(user.user_id, numberOfTags);
         addNewTags(topTags);
         setTagsOfUser(topTags);
       } catch (e) {

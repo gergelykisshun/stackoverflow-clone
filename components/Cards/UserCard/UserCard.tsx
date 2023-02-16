@@ -6,7 +6,6 @@ import { Typography } from "@mui/material";
 import Link from "next/link";
 import React, { FC } from "react";
 import ButtonSkeleton from "@/components/Skeletons/ButtonSkeleton/ButtonSkeleton";
-import { useTagStore } from "@/store/userTagsStore";
 
 type Props = {
   user: IUser;
