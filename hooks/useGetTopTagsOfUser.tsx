@@ -18,7 +18,9 @@ const useGetTopTagsOfUser = (
     if (user.user_id) {
       try {
         console.log("START FETCH");
-        const topTags = await getUserTagsByUserId(user.user_id, numberOfTags);
+        // TODO
+        // const topTags = await getUserTagsByUserId(user.user_id, numberOfTags);
+        const topTags: ITag[] = [];
         console.log("TAGS", topTags);
         addNewTags(topTags);
         setTagsOfUser(topTags);

@@ -16,6 +16,7 @@ import UserStats from "@/components/UserStats/UserStats";
 import TableSkeleton from "@/components/Skeletons/TableSkeleton/TableSkeleton";
 
 import useGetTopTagsOfUser from "@/hooks/useGetTopTagsOfUser";
+import Link from "next/link";
 
 type Props = {
   user: IUser;
@@ -79,14 +80,16 @@ const UserProfilePage: NextPage<Props> = ({ user, error }) => {
           </Typography>
 
           {user.website_url && (
-            <Typography
-              variant="body2"
-              className={mutedDetailsSharedStyle}
-              color="text.secondary"
-            >
-              <InsertLinkIcon className="pb-0.5" />
-              {user.website_url}
-            </Typography>
+            <Link href={user.website_url} target="_blank">
+              <Typography
+                variant="body2"
+                className={mutedDetailsSharedStyle}
+                color="text.secondary"
+              >
+                <InsertLinkIcon className="pb-0.5" />
+                {user.website_url}
+              </Typography>
+            </Link>
           )}
 
           <Typography
