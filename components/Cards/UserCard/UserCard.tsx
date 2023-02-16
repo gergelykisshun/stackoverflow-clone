@@ -1,11 +1,12 @@
 import TagButton from "@/components/TagButton/TagButton";
+import useGetTopTagsOfUser from "@/hooks/useGetTopTagsOfUser";
 import { useDefaultImageOnError } from "@/hooks/useDefaultImageOnError";
-import { ITag } from "@/interfaces/tags";
 import { IUser } from "@/interfaces/users";
-import { useTagStore } from "@/store/userTagsStore";
 import { Typography } from "@mui/material";
 import Link from "next/link";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
+import ButtonSkeleton from "@/components/Skeletons/ButtonSkeleton/ButtonSkeleton";
+import { useTagStore } from "@/store/userTagsStore";
 
 type Props = {
   user: IUser;
@@ -13,17 +14,8 @@ type Props = {
 
 const UserCard: FC<Props> = ({ user }) => {
   const [ownerImage, onImageError] = useDefaultImageOnError(user.profile_image);
-  const [tagsFromCache, setTagsFromCache] = useState<ITag[] | null>(null);
-  const tagsInCache = useTagStore((state) => state.tags);
 
-  useEffect(() => {
-    if (!user.topTags) {
-      console.log("NO TAGS FOR USER", user.display_name);
-      tagsInCache[user.user_id]
-        ? setTagsFromCache(tagsInCache[user.user_id])
-        : setTagsFromCache([]);
-    }
-  }, []);
+  const [tagsOfUser, loading] = useGetTopTagsOfUser(user);
 
   return (
     <div className="flex gap-2">
@@ -61,18 +53,9 @@ const UserCard: FC<Props> = ({ user }) => {
           reputation: {user.reputation}
         </Typography>
         <div className="flex flex-wrap gap-2">
-          {user.topTags &&
-            user.topTags
-              .slice(0, 5)
-              .map((tag) => (
-                <TagButton tag={tag.name} key={Math.random() + tag.name} />
-              ))}
-          {/* TODO prettier implement */}
-          {!user.topTags &&
-            tagsFromCache &&
-            tagsFromCache
-              .slice(0, 6)
-              .map((tag) => (
+          {loading
+            ? new Array(5).fill(0).map((el, i) => <ButtonSkeleton key={i} />)
+            : tagsOfUser.map((tag) => (
                 <TagButton tag={tag.name} key={Math.random() + tag.name} />
               ))}
         </div>

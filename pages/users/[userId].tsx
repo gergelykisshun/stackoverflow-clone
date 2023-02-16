@@ -1,10 +1,10 @@
-import { getUserById, getUserTagsByUserId } from "@/axios/users";
+import { getUserById } from "@/axios/users";
 import { useDefaultImageOnError } from "@/hooks/useDefaultImageOnError";
 import { IUser, IUserBadges, IUserStat } from "@/interfaces/users";
 import durationFromEpochUntilNow from "@/utility/durationFromEpochUntilNow";
 import { Paper, Typography } from "@mui/material";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
-import React, { useEffect } from "react";
+import React from "react";
 import CakeIcon from "@mui/icons-material/Cake";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
@@ -13,17 +13,20 @@ import epochToDate from "@/utility/epochToDate";
 import BadgeCard from "@/components/Cards/BadgeCard/BadgeCard";
 import UserTopTagsTable from "@/components/Tables/UserTopTagsTable";
 import UserStats from "@/components/UserStats/UserStats";
+import useGetTopTagsOfUser from "@/hooks/useGetTopTagsOfUser";
+import TableSkeleton from "@/components/Skeletons/TableSkeleton/TableSkeleton";
 import { useTagStore } from "@/store/userTagsStore";
-import { ITag } from "@/interfaces/tags";
 
 type Props = {
   user: IUser;
+  error?: string;
 };
 
-const UserProfilePage: NextPage<Props> = ({ user }) => {
+const UserProfilePage: NextPage<Props> = ({ user, error }) => {
   const [ownerImage, onImageError] = useDefaultImageOnError(user.profile_image);
   const mutedDetailsSharedStyle = "flex items-center gap-2.5 mb-0.5";
-  const addNewTags = useTagStore((state) => state.addNewTags);
+
+  const [tagsOfUser, loading] = useGetTopTagsOfUser(user, 10);
 
   const userStats: IUserStat[] = [
     { count: user.reputation, text: "reputation" },
@@ -34,12 +37,9 @@ const UserProfilePage: NextPage<Props> = ({ user }) => {
     },
   ];
 
-  // TODO
-  useEffect(() => {
-    if (user.topTags && user.topTags.length > 0) {
-      addNewTags(user.topTags);
-    }
-  }, []);
+  if (error) {
+    return <Typography variant="h6">{error}</Typography>;
+  }
 
   return (
     <div>
@@ -154,21 +154,23 @@ const UserProfilePage: NextPage<Props> = ({ user }) => {
             </div>
           </div>
 
-          {user.topTags && (
-            <div>
-              <Typography
-                variant="h6"
-                className="font-normal"
-                color="primary.main"
-                gutterBottom
-              >
-                Top 10 tags
-              </Typography>
+          <div>
+            <Typography
+              variant="h6"
+              className="font-normal"
+              color="primary.main"
+              gutterBottom
+            >
+              Top 10 tags
+            </Typography>
+            {loading ? (
+              <TableSkeleton rows={10} />
+            ) : (
               <div className="max-w-xl mx-auto">
-                <UserTopTagsTable tags={user.topTags} />
+                <UserTopTagsTable tags={tagsOfUser} />
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -191,15 +193,9 @@ export const getServerSideProps: GetServerSideProps = async ({
   if (userId) {
     try {
       const user = await getUserById(Number(userId));
-
-      try {
-        const topTags = await getUserTagsByUserId(user.user_id, 10);
-        return { props: { user: { ...user, topTags } } };
-      } catch (e) {
-        return { props: { user } };
-      }
-    } catch (e) {
-      return { notFound: true };
+      return { props: { user } };
+    } catch (e: any) {
+      return { props: { user: {}, error: e.response?.data.error_message } };
     }
   }
 

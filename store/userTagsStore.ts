@@ -6,7 +6,7 @@ interface TagsState {
   tags: TagRecord;
 }
 
-type TagRecord = Record<number, ITag[]>;
+export type TagRecord = Record<number, ITag[]>;
 
 interface TagsActions {
   addNewTags: (tags: ITag[]) => void;
