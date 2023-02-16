@@ -9,6 +9,8 @@ import { searchQuerySchema } from "@/schema/search";
 import { ISearchQueryParams } from "@/interfaces/search";
 import Paginator from "@/components/Paginator/Paginator";
 import validateSchema from "@/schema/validateSchema";
+import SortingOptions from "@/components/SortingOptions/SortingOptions";
+import { SearchSortOptions } from "@/enums/search";
 
 type Props = {
   questions: IQuestion[];
@@ -21,12 +23,18 @@ const SearchPage: NextPage<Props> = ({ questions, error }) => {
   }
 
   return (
-    <Box className="grid grid-cols-1">
-      {questions.map((question) => (
-        <QuestionCard key={question.question_id} question={question} />
-      ))}
-      <Paginator />
-    </Box>
+    <>
+      <SortingOptions
+        sortOptions={Object.values(SearchSortOptions)}
+        defaultOption={SearchSortOptions.ACTIVITY}
+      />
+      <Box className="grid grid-cols-1">
+        {questions.map((question) => (
+          <QuestionCard key={question.question_id} question={question} />
+        ))}
+        <Paginator />
+      </Box>
+    </>
   );
 };
 

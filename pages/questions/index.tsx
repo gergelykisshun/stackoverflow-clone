@@ -8,6 +8,8 @@ import QuestionCard from "@/components/Cards/QuestionCard/QuestionCard";
 import Paginator from "@/components/Paginator/Paginator";
 import validateSchema from "@/schema/validateSchema";
 import { questionQuerySchema } from "@/schema/question";
+import SortingOptions from "@/components/SortingOptions/SortingOptions";
+import { QuestionSortOptions } from "@/enums/question";
 
 type Props = {
   questions: IQuestion[];
@@ -20,12 +22,18 @@ const AllQuestionsPage: NextPage<Props> = ({ questions, error }) => {
   }
 
   return (
-    <Box className="grid grid-cols-1">
-      {questions.map((question) => (
-        <QuestionCard key={question.question_id} question={question} />
-      ))}
-      <Paginator isCentered />
-    </Box>
+    <>
+      <SortingOptions
+        sortOptions={Object.values(QuestionSortOptions)}
+        defaultOption={QuestionSortOptions.ACTIVITY}
+      />
+      <Box className="grid grid-cols-1">
+        {questions.map((question) => (
+          <QuestionCard key={question.question_id} question={question} />
+        ))}
+        <Paginator isCentered />
+      </Box>
+    </>
   );
 };
 

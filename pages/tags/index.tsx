@@ -7,6 +7,8 @@ import { getTagsByQuery } from "@/axios/tags";
 import { Box, Typography } from "@mui/material";
 import Paginator from "@/components/Paginator/Paginator";
 import TagCard from "@/components/Cards/TagCard/TagCard";
+import SortingOptions from "@/components/SortingOptions/SortingOptions";
+import { TagSortOptions } from "@/enums/tag";
 
 type Props = {
   tags: ITag[];
@@ -31,6 +33,10 @@ const TagsPage: NextPage<Props> = ({ tags, error }) => {
         similar questions. Using the right tags makes it easier for others to
         find and answer your question.
       </Typography>
+      <SortingOptions
+        sortOptions={Object.values(TagSortOptions)}
+        defaultOption={TagSortOptions.POPULAR}
+      />
       <Box className="grid xs:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-5">
         {tags.map((tag) => (
           <TagCard key={tag.name} tag={tag} />
