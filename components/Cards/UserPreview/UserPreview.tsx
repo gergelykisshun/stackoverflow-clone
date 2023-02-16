@@ -10,7 +10,7 @@ type Props = {
 const UserPreview: FC<Props> = ({ user }) => {
   const [ownerImage, onImageError] = useDefaultImageOnError(user.profile_image);
   return (
-    <div className="flex flex-col items-center gap-2">
+    <div className="flex flex-col items-center gap-2 px-10 py-5 shadow-lg rounded-sm">
       <img
         className="w-28 h-28 object-cover rounded-sm"
         src={ownerImage}
