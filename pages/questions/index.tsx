@@ -37,7 +37,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 }: GetServerSidePropsContext) => {
   res.setHeader(
     "Cache-control",
-    "public, s-maxage=60, stale-while-revalidate=120"
+    `public, s-maxage=${process.env.SSR_CACHE_MAX_AGE}, stale-while-revalidate=${process.env.SSR_CACHE_REVALIDATE}`
   );
 
   try {
