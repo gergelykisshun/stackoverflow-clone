@@ -48,7 +48,7 @@ export const getAnswersByUserId = async (
 ): Promise<IAnswer[]> => {
   const response = await api.get<IGenericApiResponse<IAnswer>>(
     `${USERSBASE_URL}/${userId}/answers`,
-    { params: { pagesize } }
+    { params: { pagesize, sort: "votes" } }
   );
 
   return response.data.items;
@@ -60,7 +60,7 @@ export const getQuestionsByUserId = async (
 ): Promise<IQuestion[]> => {
   const response = await api.get<IGenericApiResponse<IQuestion>>(
     `${USERSBASE_URL}/${userId}/questions`,
-    { params: { pagesize } }
+    { params: { pagesize, sort: "score" } }
   );
 
   return response.data.items;

@@ -23,6 +23,8 @@ import useGetTopTagsOfUser from "@/hooks/useGetTopTagsOfUser";
 import Link from "next/link";
 import { IAnswer } from "@/interfaces/answer";
 import { IQuestion } from "@/interfaces/question";
+import AnswersTable from "@/components/Tables/AnswersTable";
+import QuestionsTable from "@/components/Tables/QuestionsTable";
 
 type Props = {
   user: IUser;
@@ -162,7 +164,7 @@ const UserProfilePage: NextPage<Props> = ({ user, answers, questions }) => {
             </div>
           </div>
 
-          <div>
+          <div className="mb-10">
             <Typography
               variant="h6"
               className="font-normal"
@@ -173,10 +175,48 @@ const UserProfilePage: NextPage<Props> = ({ user, answers, questions }) => {
             </Typography>
             {loading ? (
               <TableSkeleton rows={10} />
-            ) : (
+            ) : tagsOfUser.length > 0 ? (
               <div className="max-w-xl mx-auto">
                 <TopTagsTable tags={tagsOfUser} />
               </div>
+            ) : (
+              <Typography>No tags available</Typography>
+            )}
+          </div>
+
+          <div className="mb-10">
+            <Typography
+              variant="h6"
+              className="font-normal"
+              color="primary.main"
+              gutterBottom
+            >
+              Top questions
+            </Typography>
+            {questions.length > 0 ? (
+              <div className="max-w-xl mx-auto">
+                <QuestionsTable questions={questions} />
+              </div>
+            ) : (
+              <Typography>No questions available</Typography>
+            )}
+          </div>
+
+          <div className="mb-10">
+            <Typography
+              variant="h6"
+              className="font-normal"
+              color="primary.main"
+              gutterBottom
+            >
+              Top answers
+            </Typography>
+            {answers.length > 0 ? (
+              <div className="max-w-xl mx-auto">
+                <AnswersTable answers={answers} />
+              </div>
+            ) : (
+              <Typography>No answers available</Typography>
             )}
           </div>
         </div>
