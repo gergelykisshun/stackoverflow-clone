@@ -1,6 +1,15 @@
 /* @tailwind base; */
 /* @tailwind components; */
 @tailwind utilities;
+@import "@fontsource/roboto/300.css";
+@import "@fontsource/roboto/400.css";
+@import "@fontsource/roboto/500.css";
+@import "@fontsource/roboto/700.css";
+
+body {
+  overflow: auto !important;
+  padding: unset !important;
+}
 
 a {
   text-decoration: none;
@@ -11,8 +20,3 @@ p {
   margin: 0;
   padding: 0;
 }
-
-@import "@fontsource/roboto/300.css";
-@import "@fontsource/roboto/400.css";
-@import "@fontsource/roboto/500.css";
-@import "@fontsource/roboto/700.css";
