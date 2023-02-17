@@ -12,3 +12,13 @@ export enum UserSortOptions {
   NAME = "name",
   MODIFIED = "modified",
 }
+
+export enum CollectiveType {
+  WEBSITE = "WEBSITE",
+  TWITTER = "TWITTER",
+  GITHUB = "GITHUB",
+  FACEBOOK = "FACEBOOK",
+  INSTAGRAM = "INSTAGRAM",
+  SUPPORT = "SUPPORT",
+  LINKEDIN = "LINKEDIN",
+}

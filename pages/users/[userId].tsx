@@ -1,4 +1,8 @@
-import { getUserById } from "@/axios/users";
+import {
+  getAnswersByUserId,
+  getQuestionsByUserId,
+  getUserById,
+} from "@/axios/users";
 import { useDefaultImageOnError } from "@/hooks/useDefaultImageOnError";
 import { IUser, IUserBadges, IUserStat } from "@/interfaces/users";
 import durationFromEpochUntilNow from "@/utility/durationFromEpochUntilNow";
@@ -17,13 +21,16 @@ import TableSkeleton from "@/components/Skeletons/TableSkeleton/TableSkeleton";
 
 import useGetTopTagsOfUser from "@/hooks/useGetTopTagsOfUser";
 import Link from "next/link";
+import { IAnswer } from "@/interfaces/answer";
+import { IQuestion } from "@/interfaces/question";
 
 type Props = {
   user: IUser;
-  error?: string;
+  answers: IAnswer[];
+  questions: IQuestion[];
 };
 
-const UserProfilePage: NextPage<Props> = ({ user, error }) => {
+const UserProfilePage: NextPage<Props> = ({ user, answers, questions }) => {
   const [ownerImage, onImageError] = useDefaultImageOnError(user.profile_image);
   const mutedDetailsSharedStyle = "flex items-center gap-2.5 mb-0.5";
 
@@ -37,10 +44,6 @@ const UserProfilePage: NextPage<Props> = ({ user, error }) => {
       text: "reputation this month",
     },
   ];
-
-  if (error) {
-    return <Typography variant="h6">{error}</Typography>;
-  }
 
   return (
     <div>
@@ -194,14 +197,29 @@ export const getServerSideProps: GetServerSideProps = async ({
   );
   res.setHeader("Accept-Encoding", "deflate, gzip");
 
-  const userId = params?.userId;
+  const userId = Number(params?.userId);
+
+  let answers: IAnswer[] = [];
+  let questions: IQuestion[] = [];
 
   if (userId) {
     try {
-      const user = await getUserById(Number(userId));
-      return { props: { user } };
+      answers = await getAnswersByUserId(userId);
+    } catch (e) {
+      console.log("Fetching answers failed!");
+    }
+
+    try {
+      questions = await getQuestionsByUserId(userId);
+    } catch (e) {
+      console.log("Fetching questions failed!");
+    }
+
+    try {
+      const user = await getUserById(userId);
+      return { props: { user, answers, questions } };
     } catch (e: any) {
-      return { props: { user: {}, error: e.response?.data.error_message } };
+      console.log(e.response?.data.error_message);
     }
   }
 

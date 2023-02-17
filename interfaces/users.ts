@@ -1,4 +1,4 @@
-import { UserType } from "@/enums/user";
+import { CollectiveType, UserType } from "@/enums/user";
 import { IGenericApiQuery } from "./generic";
 import { ITag } from "./tags";
 
@@ -41,7 +41,19 @@ export interface IUser {
   topTags?: ITag[];
 }
 
-export interface ICollective {}
+export interface ICollective {
+  description: string;
+  external_links: ICollectiveExternalLink;
+  link: string;
+  name: string;
+  slug: string;
+  tags: string[];
+}
+
+export interface ICollectiveExternalLink {
+  link: string;
+  type: CollectiveType;
+}
 
 export interface IUserBadges {
   bronze: number;

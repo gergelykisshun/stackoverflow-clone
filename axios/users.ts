@@ -1,4 +1,6 @@
+import { IAnswer } from "@/interfaces/answer";
 import { IGenericApiResponse } from "@/interfaces/generic";
+import { IQuestion } from "@/interfaces/question";
 import { ITag } from "@/interfaces/tags";
 import { IUser, IUserQueryParams } from "@/interfaces/users";
 import { api } from "./init";
@@ -34,7 +36,32 @@ export const getUserTagsByUserId = async (
     { params: { pagesize } }
   );
 
+  // TODO remove
   console.log("BACKOFF RECIEVED!!!", response.data.backoff);
+
+  return response.data.items;
+};
+
+export const getAnswersByUserId = async (
+  userId: number,
+  pagesize: number = 10
+): Promise<IAnswer[]> => {
+  const response = await api.get<IGenericApiResponse<IAnswer>>(
+    `${USERSBASE_URL}/${userId}/answers`,
+    { params: { pagesize } }
+  );
+
+  return response.data.items;
+};
+
+export const getQuestionsByUserId = async (
+  userId: number,
+  pagesize: number = 10
+): Promise<IQuestion[]> => {
+  const response = await api.get<IGenericApiResponse<IQuestion>>(
+    `${USERSBASE_URL}/${userId}/questions`,
+    { params: { pagesize } }
+  );
 
   return response.data.items;
 };

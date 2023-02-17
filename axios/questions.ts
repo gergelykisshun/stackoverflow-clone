@@ -16,3 +16,13 @@ export const getQuestionsByQuery = async (
 
   return response.data.items;
 };
+
+export const getQuestionById = async (
+  questionId: number
+): Promise<IQuestion> => {
+  const response = await api.get<IGenericApiResponse<IQuestion>>(
+    `${QUESTIONBASE_URL}/${questionId}`
+  );
+
+  return response.data.items[0];
+};
