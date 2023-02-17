@@ -27,8 +27,8 @@ const AllUsersPage: NextPage<Props> = ({ users, error }) => {
       />
 
       <Box className="grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 content-center xs:py-8 py-16 px-10 shadow-md bg-slate-50">
-        {users.map((user) => (
-          <UserCard key={user.account_id} user={user} />
+        {users.map((user, i) => (
+          <UserCard key={user.account_id} user={user} cardIndex={i} />
         ))}
       </Box>
       <Paginator isCentered />

@@ -27,7 +27,7 @@ const UserProfilePage: NextPage<Props> = ({ user, error }) => {
   const [ownerImage, onImageError] = useDefaultImageOnError(user.profile_image);
   const mutedDetailsSharedStyle = "flex items-center gap-2.5 mb-0.5";
 
-  const [tagsOfUser, loading] = useGetTopTagsOfUser(user, 10);
+  const [tagsOfUser, loading] = useGetTopTagsOfUser(user);
 
   const userStats: IUserStat[] = [
     { count: user.reputation, text: "reputation" },

@@ -6,8 +6,10 @@ import { useCallback, useEffect, useState } from "react";
 
 const useGetTopTagsOfUser = (
   user: IUser,
-  numberOfTags: number = 5
+  timeoutBase: number = 0,
+  numberOfTags: number = 10
 ): [ITag[], boolean] => {
+  const timeout = Math.floor(timeoutBase / 5) * 1500;
   const tagsInCache = useTagStore((state) => state.tags);
   const addNewTags = useTagStore((state) => state.addNewTags);
   const [tagsOfUser, setTagsOfUser] = useState<ITag[]>([]);
@@ -16,9 +18,10 @@ const useGetTopTagsOfUser = (
   const fetchTagsOfUser = useCallback(async () => {
     if (user.user_id) {
       try {
-        const topTags = await getUserTagsByUserId(user.user_id, numberOfTags);
-        addNewTags(topTags);
-        setTagsOfUser(topTags);
+        console.log("FETCHED", timeout, timeoutBase);
+        // const topTags = await getUserTagsByUserId(user.user_id, numberOfTags);
+        // addNewTags(topTags);
+        // setTagsOfUser(topTags);
       } catch (e) {
         console.log("Failed to fetch tags!");
       }
@@ -27,14 +30,23 @@ const useGetTopTagsOfUser = (
   }, [addNewTags, user]);
 
   useEffect(() => {
+    let timeOutId: NodeJS.Timeout;
     if (loading && user.user_id) {
       if (tagsInCache[user.user_id]) {
         setTagsOfUser(tagsInCache[user.user_id]);
         setLoading(false);
       } else {
-        fetchTagsOfUser();
+        timeOutId = setTimeout(() => {
+          fetchTagsOfUser();
+        }, timeout);
       }
     }
+
+    return () => {
+      if (timeOutId) {
+        clearTimeout(timeOutId);
+      }
+    };
   }, [user]);
 
   return [tagsOfUser, loading];

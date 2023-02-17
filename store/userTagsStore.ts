@@ -24,8 +24,6 @@ export const useTagStore = create(
         set(() => {
           const currentTags = get().tags;
 
-          console.log("CURRENT TAGS", currentTags);
-
           tags.forEach((tag) => {
             if (tag.user_id) {
               if (currentTags[tag.user_id]) {
@@ -36,8 +34,6 @@ export const useTagStore = create(
               return (currentTags[tag.user_id] = [tag]);
             }
           });
-
-          console.log("END", currentTags);
 
           return { tags: { ...currentTags } };
         }),
