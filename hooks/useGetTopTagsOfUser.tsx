@@ -19,9 +19,9 @@ const useGetTopTagsOfUser = (
     if (user.user_id) {
       try {
         console.log("FETCHED", timeout, timeoutBase);
-        // const topTags = await getUserTagsByUserId(user.user_id, numberOfTags);
-        // addNewTags(topTags);
-        // setTagsOfUser(topTags);
+        const topTags = await getUserTagsByUserId(user.user_id, numberOfTags);
+        addNewTags(topTags);
+        setTagsOfUser(topTags);
       } catch (e) {
         console.log("Failed to fetch tags!");
       }
