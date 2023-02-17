@@ -12,9 +12,11 @@ import { useRouter } from "next/router";
 import { ISidebarOption } from "@/interfaces/sidebar";
 import Link from "next/link";
 
-type Props = {};
+type Props = {
+  closeDrawer: () => void;
+};
 
-const Sidebar: FC<Props> = () => {
+const Sidebar: FC<Props> = ({ closeDrawer }) => {
   const { pathname } = useRouter();
   const sidebarOptions: ISidebarOption[] = [
     { text: "Questions", icon: <QuizIcon />, routeTo: "/questions" },
@@ -42,6 +44,7 @@ const Sidebar: FC<Props> = () => {
             key={option.text}
             {...option}
             isSelected={pathname === option.routeTo}
+            closeDrawer={closeDrawer}
           />
         ))}
       </List>

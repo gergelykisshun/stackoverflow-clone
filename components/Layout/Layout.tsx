@@ -63,7 +63,7 @@ const Layout: FC<Props> = ({ children }) => {
             },
           }}
         >
-          <Sidebar />
+          <Sidebar closeDrawer={handleDrawerToggle}/>
         </Drawer>
         <Drawer
           variant="permanent"
@@ -76,7 +76,7 @@ const Layout: FC<Props> = ({ children }) => {
           }}
           open
         >
-          <Sidebar />
+          <Sidebar closeDrawer={handleDrawerToggle}/>/>
         </Drawer>
       </Box>
       <Box
