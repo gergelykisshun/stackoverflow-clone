@@ -16,15 +16,17 @@ const SortingOptions: FC<Props> = ({ defaultOption, sortOptions }) => {
     e: React.MouseEvent<HTMLElement, MouseEvent>,
     newSelection: string
   ) => {
-    setSelected(newSelection);
-    router.push(
-      getPathToPushWithNewQuery(
-        router.query,
-        "sort",
-        newSelection,
-        router.asPath
-      )
-    );
+    if (newSelection) {
+      setSelected(newSelection);
+      router.push(
+        getPathToPushWithNewQuery(
+          router.query,
+          "sort",
+          newSelection,
+          router.asPath
+        )
+      );
+    }
   };
 
   return (
