@@ -14,6 +14,7 @@ import DoneIcon from "@mui/icons-material/Done";
 import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import { useRouter } from "next/router";
 import { getQuestionById } from "@/axios/questions";
+import Link from "next/link";
 
 type Props = {
   questions: IQuestion[];
@@ -25,17 +26,8 @@ const QuestionsTable: FC<Props> = ({ questions }) => {
     text: question.title,
     answerId: question.accepted_answer_id,
     id: question.question_id,
+    link: question.link,
   }));
-  const router = useRouter();
-
-  const handleClick = async (questionId: number) => {
-    try {
-      const question = await getQuestionById(questionId);
-      router.push(`${question.link}`);
-    } catch (e) {
-      console.log("Could not load question.");
-    }
-  };
 
   return (
     <TableContainer component={Paper}>
@@ -52,13 +44,14 @@ const QuestionsTable: FC<Props> = ({ questions }) => {
                 />
               </TableCell>
               <TableCell component="th" scope="row">
-                <Typography
-                  onClick={() => handleClick(row.id)}
-                  color="primary"
-                  className="text-base md:text-lg cursor-pointer"
-                >
-                  {row.text}
-                </Typography>
+                <Link href={row.link} target="_blank">
+                  <Typography
+                    color="primary"
+                    className="text-base md:text-lg cursor-pointer"
+                  >
+                    {row.text}
+                  </Typography>
+                </Link>
               </TableCell>
               <TableCell align="right" className="hidden md:table-cell">
                 {row.answerId ? (

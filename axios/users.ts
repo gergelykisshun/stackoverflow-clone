@@ -36,9 +36,6 @@ export const getUserTagsByUserId = async (
     { params: { pagesize } }
   );
 
-  // TODO remove
-  console.log("BACKOFF RECIEVED!!!", response.data.backoff);
-
   return response.data.items;
 };
 
@@ -60,8 +57,10 @@ export const getQuestionsByUserId = async (
 ): Promise<IQuestion[]> => {
   const response = await api.get<IGenericApiResponse<IQuestion>>(
     `${USERSBASE_URL}/${userId}/questions`,
-    { params: { pagesize, sort: "score" } }
+    { params: { pagesize, sort: "votes" } }
   );
+
+  console.log("WHAT IS THE RES FOR QUeSTIONS", response.data);
 
   return response.data.items;
 };
