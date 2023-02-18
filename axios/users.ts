@@ -48,6 +48,8 @@ export const getAnswersByUserId = async (
     { params: { pagesize, sort: "votes" } }
   );
 
+  console.log(response.data.items.slice(0, 3));
+
   return response.data.items;
 };
 
@@ -59,8 +61,6 @@ export const getQuestionsByUserId = async (
     `${USERSBASE_URL}/${userId}/questions`,
     { params: { pagesize, sort: "votes" } }
   );
-
-  console.log("WHAT IS THE RES FOR QUeSTIONS", response.data);
 
   return response.data.items;
 };

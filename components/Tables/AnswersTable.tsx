@@ -9,11 +9,10 @@ import {
   Chip,
   Typography,
 } from "@mui/material";
-import React, { FC } from "react";
-import DoneIcon from "@mui/icons-material/Done";
-import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { getQuestionById } from "@/axios/questions";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 type Props = {
   answers: IAnswer[];
@@ -27,16 +26,25 @@ const AnswersTable: FC<Props> = ({ answers }) => {
     questionId: answer.question_id,
   }));
 
-  const router = useRouter();
+  const linkRef = useRef<null | HTMLAnchorElement>(null);
+  const [questionLink, setQuestionLink] = useState<string>("");
 
   const handleClick = async (questionId: number) => {
     try {
       const question = await getQuestionById(questionId);
-      router.push(`${question.link}`);
+      setQuestionLink(question.link);
     } catch (e) {
       console.log("Could not load question.");
     }
   };
+
+  useEffect(() => {
+    if (questionLink && linkRef.current) {
+      linkRef.current.click();
+      setQuestionLink("");
+    }
+  }, [questionLink]);
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -60,6 +68,12 @@ const AnswersTable: FC<Props> = ({ answers }) => {
                 >
                   Check the question!
                 </Typography>
+                <Link
+                  href={questionLink}
+                  target="_blank"
+                  ref={linkRef}
+                  className="invisible"
+                />
               </TableCell>
             </TableRow>
           ))}
