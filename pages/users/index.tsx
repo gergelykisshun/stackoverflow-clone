@@ -62,7 +62,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       props: {
         users: [],
         error:
-          e.response?.data.error_message || e.details?.length > 0
+          e.details?.length > 0
             ? e.details[0].message
             : "Sorry something went wrong!",
       },
