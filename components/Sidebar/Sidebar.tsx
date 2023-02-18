@@ -13,7 +13,7 @@ import { ISidebarOption } from "@/interfaces/sidebar";
 import Link from "next/link";
 
 type Props = {
-  closeDrawer: () => void;
+  closeDrawer?: () => void;
 };
 
 const Sidebar: FC<Props> = ({ closeDrawer }) => {

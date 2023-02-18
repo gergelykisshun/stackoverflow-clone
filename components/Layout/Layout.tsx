@@ -2,6 +2,7 @@ import { Box, CssBaseline, Drawer } from "@mui/material";
 import { useRouter } from "next/router";
 
 import React, { FC, ReactNode, useEffect, useState } from "react";
+import { useWindowSize } from "usehooks-ts";
 import Header from "../Header/Header";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import Sidebar from "../Sidebar/Sidebar";
@@ -11,11 +12,12 @@ type Props = {
 };
 
 const Layout: FC<Props> = ({ children }) => {
+  const { width } = useWindowSize();
   const drawerWidth = 240;
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+    setMobileOpen((prev) => !prev);
   };
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -48,36 +50,37 @@ const Layout: FC<Props> = ({ children }) => {
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
         aria-label="mailbox folders"
       >
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          className="xs:block sm:hidden"
-          sx={{
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-        >
-          <Sidebar closeDrawer={handleDrawerToggle} />
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          className="xs:hidden sm:block"
-          sx={{
-            "& .MuiDrawer-paper": {
-              boxSizing: "border-box",
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          <Sidebar closeDrawer={handleDrawerToggle} />
-        </Drawer>
+        {width > 600 ? (
+          <Drawer
+            variant="permanent"
+            sx={{
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
+            }}
+            open
+          >
+            <Sidebar />
+          </Drawer>
+        ) : (
+          <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true,
+            }}
+            sx={{
+              "& .MuiDrawer-paper": {
+                boxSizing: "border-box",
+                width: drawerWidth,
+              },
+            }}
+          >
+            <Sidebar closeDrawer={handleDrawerToggle} />
+          </Drawer>
+        )}
       </Box>
       <Box
         component="main"

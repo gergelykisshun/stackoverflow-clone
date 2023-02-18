@@ -11,7 +11,7 @@ import React, { FC } from "react";
 
 interface Props extends ISidebarOption {
   isSelected: boolean;
-  closeDrawer: () => void;
+  closeDrawer?: () => void;
 }
 
 const SidebarOption: FC<Props> = ({
@@ -28,7 +28,9 @@ const SidebarOption: FC<Props> = ({
       href={routeTo}
       onClick={() => {
         resetSearchText();
-        closeDrawer();
+        if (closeDrawer) {
+          closeDrawer();
+        }
       }}
     >
       <ListItem disablePadding>
