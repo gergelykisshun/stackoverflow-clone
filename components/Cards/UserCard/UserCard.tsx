@@ -1,5 +1,3 @@
-import TagButton from "@/components/TagButton/TagButton";
-import useGetTopTagsOfUser from "@/hooks/useGetTopTagsOfUser";
 import { useDefaultImageOnError } from "@/hooks/useDefaultImageOnError";
 import { IUser } from "@/interfaces/users";
 import { Typography } from "@mui/material";

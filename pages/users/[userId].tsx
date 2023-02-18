@@ -2,6 +2,7 @@ import {
   getAnswersByUserId,
   getQuestionsByUserId,
   getUserById,
+  getUserTagsByUserId,
 } from "@/axios/users";
 import { useDefaultImageOnError } from "@/hooks/useDefaultImageOnError";
 import { IUser, IUserBadges, IUserStat } from "@/interfaces/users";
@@ -17,26 +18,29 @@ import epochToDate from "@/utility/epochToDate";
 import BadgeCard from "@/components/Cards/BadgeCard/BadgeCard";
 import TopTagsTable from "@/components/Tables/TopTagsTable";
 import UserStats from "@/components/UserStats/UserStats";
-import TableSkeleton from "@/components/Skeletons/TableSkeleton/TableSkeleton";
 
-import useGetTopTagsOfUser from "@/hooks/useGetTopTagsOfUser";
 import Link from "next/link";
 import { IAnswer } from "@/interfaces/answer";
 import { IQuestion } from "@/interfaces/question";
 import AnswersTable from "@/components/Tables/AnswersTable";
 import QuestionsTable from "@/components/Tables/QuestionsTable";
+import { ITag } from "@/interfaces/tags";
 
 type Props = {
   user: IUser;
   answers: IAnswer[];
   questions: IQuestion[];
+  tags: ITag[];
 };
 
-const UserProfilePage: NextPage<Props> = ({ user, answers, questions }) => {
+const UserProfilePage: NextPage<Props> = ({
+  user,
+  answers,
+  questions,
+  tags,
+}) => {
   const [ownerImage, onImageError] = useDefaultImageOnError(user.profile_image);
   const mutedDetailsSharedStyle = "flex items-center gap-2.5 mb-0.5";
-
-  const [tagsOfUser, loading] = useGetTopTagsOfUser(user);
 
   const userStats: IUserStat[] = [
     { count: user.reputation, text: "reputation" },
@@ -164,61 +168,56 @@ const UserProfilePage: NextPage<Props> = ({ user, answers, questions }) => {
             </div>
           </div>
 
-          <div className="mb-10">
-            <Typography
-              variant="h6"
-              className="font-normal"
-              color="primary.main"
-              gutterBottom
-            >
-              Top 10 tags
-            </Typography>
-            {loading ? (
-              <TableSkeleton rows={10} />
-            ) : tagsOfUser.length > 0 ? (
-              <div className="max-w-xl mx-auto">
-                <TopTagsTable tags={tagsOfUser} />
-              </div>
-            ) : (
-              <Typography>No tags available</Typography>
-            )}
-          </div>
+          {tags.length > 0 && (
+            <div className="mb-10">
+              <Typography
+                variant="h6"
+                className="font-normal"
+                color="primary.main"
+                gutterBottom
+              >
+                Top 10 tags
+              </Typography>
 
-          <div className="mb-10">
-            <Typography
-              variant="h6"
-              className="font-normal"
-              color="primary.main"
-              gutterBottom
-            >
-              Top questions
-            </Typography>
-            {questions.length > 0 ? (
+              <div className="max-w-xl mx-auto">
+                <TopTagsTable tags={tags} />
+              </div>
+            </div>
+          )}
+
+          {questions.length > 0 && (
+            <div className="mb-10">
+              <Typography
+                variant="h6"
+                className="font-normal"
+                color="primary.main"
+                gutterBottom
+              >
+                Top questions
+              </Typography>
+
               <div className="max-w-xl mx-auto">
                 <QuestionsTable questions={questions} />
               </div>
-            ) : (
-              <Typography>No questions available</Typography>
-            )}
-          </div>
+            </div>
+          )}
 
-          <div className="mb-10">
-            <Typography
-              variant="h6"
-              className="font-normal"
-              color="primary.main"
-              gutterBottom
-            >
-              Top answers
-            </Typography>
-            {answers.length > 0 ? (
+          {answers.length > 0 && (
+            <div className="mb-10">
+              <Typography
+                variant="h6"
+                className="font-normal"
+                color="primary.main"
+                gutterBottom
+              >
+                Top answers
+              </Typography>
+
               <div className="max-w-xl mx-auto">
                 <AnswersTable answers={answers} />
               </div>
-            ) : (
-              <Typography>No answers available</Typography>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -241,6 +240,7 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   let answers: IAnswer[] = [];
   let questions: IQuestion[] = [];
+  let tags: ITag[] = [];
 
   if (userId) {
     try {
@@ -256,8 +256,14 @@ export const getServerSideProps: GetServerSideProps = async ({
     }
 
     try {
+      tags = await getUserTagsByUserId(userId);
+    } catch (e) {
+      console.log("Fetching tags failed!");
+    }
+
+    try {
       const user = await getUserById(userId);
-      return { props: { user, answers, questions } };
+      return { props: { user, answers, questions, tags } };
     } catch (e: any) {
       console.log(e.response?.data.error_message);
     }
