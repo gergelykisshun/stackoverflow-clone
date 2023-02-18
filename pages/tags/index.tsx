@@ -9,6 +9,7 @@ import Paginator from "@/components/Paginator/Paginator";
 import TagCard from "@/components/Cards/TagCard/TagCard";
 import SortingOptions from "@/components/SortingOptions/SortingOptions";
 import { TagSortOptions } from "@/enums/tag";
+import Head from "next/head";
 
 type Props = {
   tags: ITag[];
@@ -21,6 +22,9 @@ const TagsPage: NextPage<Props> = ({ tags, error }) => {
   }
   return (
     <>
+      <Head>
+        <title>Flash answers - Tags</title>
+      </Head>
       <Typography variant="h3" className="font-light" gutterBottom>
         Tags
       </Typography>

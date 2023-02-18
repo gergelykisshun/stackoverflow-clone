@@ -10,6 +10,7 @@ import validateSchema from "@/schema/validateSchema";
 import { questionQuerySchema } from "@/schema/question";
 import SortingOptions from "@/components/SortingOptions/SortingOptions";
 import { QuestionSortOptions } from "@/enums/question";
+import Head from "next/head";
 
 type Props = {
   questions: IQuestion[];
@@ -23,6 +24,9 @@ const AllQuestionsPage: NextPage<Props> = ({ questions, error }) => {
 
   return (
     <>
+      <Head>
+        <title>Flash answers - Questions</title>
+      </Head>
       <SortingOptions
         sortOptions={Object.values(QuestionSortOptions)}
         defaultOption={QuestionSortOptions.ACTIVITY}

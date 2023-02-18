@@ -11,6 +11,7 @@ import Paginator from "@/components/Paginator/Paginator";
 import validateSchema from "@/schema/validateSchema";
 import SortingOptions from "@/components/SortingOptions/SortingOptions";
 import { SearchSortOptions } from "@/enums/search";
+import Head from "next/head";
 
 type Props = {
   questions: IQuestion[];
@@ -24,6 +25,9 @@ const SearchPage: NextPage<Props> = ({ questions, error }) => {
 
   return (
     <>
+      <Head>
+        <title>Flash answers - Search</title>
+      </Head>
       <SortingOptions
         sortOptions={Object.values(SearchSortOptions)}
         defaultOption={SearchSortOptions.ACTIVITY}

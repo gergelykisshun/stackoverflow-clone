@@ -9,6 +9,7 @@ import validateSchema from "@/schema/validateSchema";
 import { userQuerySchema } from "@/schema/user";
 import SortingOptions from "@/components/SortingOptions/SortingOptions";
 import { UserSortOptions } from "@/enums/user";
+import Head from "next/head";
 
 type Props = {
   users: IUser[];
@@ -21,6 +22,9 @@ const AllUsersPage: NextPage<Props> = ({ users, error }) => {
   }
   return (
     <>
+      <Head>
+        <title>Flash answers - Users</title>
+      </Head>
       <SortingOptions
         sortOptions={Object.values(UserSortOptions)}
         defaultOption={UserSortOptions.REPUTATION}

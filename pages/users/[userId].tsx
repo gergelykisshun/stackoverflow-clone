@@ -25,6 +25,7 @@ import { IQuestion } from "@/interfaces/question";
 import AnswersTable from "@/components/Tables/AnswersTable";
 import QuestionsTable from "@/components/Tables/QuestionsTable";
 import { ITag } from "@/interfaces/tags";
+import Head from "next/head";
 
 type Props = {
   user: IUser;
@@ -53,6 +54,9 @@ const UserProfilePage: NextPage<Props> = ({
 
   return (
     <div>
+      <Head>
+        <title>Flash answers - User - {user.display_name}</title>
+      </Head>
       {/* Picture + Details */}
       <div className="flex flex-col gap-5 md:flex-row mb-10">
         <Paper
