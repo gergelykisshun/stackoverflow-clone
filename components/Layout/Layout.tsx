@@ -55,8 +55,8 @@ const Layout: FC<Props> = ({ children }) => {
           ModalProps={{
             keepMounted: true,
           }}
+          className="xs:block sm:hidden"
           sx={{
-            display: { xs: "block", sm: "none" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
@@ -67,8 +67,8 @@ const Layout: FC<Props> = ({ children }) => {
         </Drawer>
         <Drawer
           variant="permanent"
+          className="xs:hidden sm:block"
           sx={{
-            display: { xs: "none", sm: "block" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
               width: drawerWidth,
