@@ -29,7 +29,7 @@ const AllQuestionsPage: NextPage<Props> = ({ questions, error }) => {
       </Head>
       <SortingOptions
         sortOptions={Object.values(QuestionSortOptions)}
-        defaultOption={QuestionSortOptions.ACTIVITY}
+        defaultOption={QuestionSortOptions.VOTES}
       />
       <Box className="grid grid-cols-1">
         {questions.map((question) => (
@@ -58,6 +58,10 @@ export const getServerSideProps: GetServerSideProps = async ({
       query,
       questionQuerySchema
     )) as IQuestionQueryParams;
+
+    if (!questionQuery.sort) {
+      questionQuery.sort = "votes";
+    }
 
     const questions: IQuestion[] = await getQuestionsByQuery(questionQuery);
     return { props: { questions } };
