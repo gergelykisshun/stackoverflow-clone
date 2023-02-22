@@ -1,4 +1,11 @@
-import { Toolbar, Divider, List, Typography } from "@mui/material";
+import {
+  Toolbar,
+  Divider,
+  List,
+  Typography,
+  FormControlLabel,
+  Switch,
+} from "@mui/material";
 import React, { FC } from "react";
 
 import LocalOfferIcon from "@mui/icons-material/Mail";
@@ -11,6 +18,7 @@ import SidebarOption from "../SidebarOption/SidebarOption";
 import { useRouter } from "next/router";
 import { ISidebarOption } from "@/interfaces/sidebar";
 import Link from "next/link";
+import { useThemeStore } from "@/store/themeStore";
 
 type Props = {
   closeDrawer?: () => void;
@@ -23,13 +31,19 @@ const Sidebar: FC<Props> = ({ closeDrawer }) => {
     { text: "Tags", icon: <LocalOfferIcon />, routeTo: "/tags" },
     { text: "Users", icon: <PersonIcon />, routeTo: "/users" },
   ];
+  const setMode = useThemeStore((state) => state.setMode);
+  const mode = useThemeStore((state) => state.mode);
 
   return (
     <div>
       <Link href={"/"}>
         <Toolbar className="px-4">
           <DynamicFormIcon color="primary" className="mr-2" />
-          <Typography variant="h6" className="cursor-pointer">
+          <Typography
+            variant="h6"
+            color="text.primary"
+            className="cursor-pointer"
+          >
             Flash{" "}
             <Typography color="primary" component="span" variant="h6">
               answers
@@ -48,6 +62,11 @@ const Sidebar: FC<Props> = ({ closeDrawer }) => {
           />
         ))}
       </List>
+      <FormControlLabel
+        label={mode === "dark" ? "Dark mode" : "Light mode"}
+        control={<Switch onClick={() => setMode()} />}
+        className="px-4 py-2"
+      />
     </div>
   );
 };
