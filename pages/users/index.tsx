@@ -30,7 +30,10 @@ const AllUsersPage: NextPage<Props> = ({ users, error }) => {
         defaultOption={UserSortOptions.REPUTATION}
       />
 
-      <Box className="grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 content-center xs:py-8 py-16 px-10 shadow-md bg-slate-50">
+      <Box
+        bgcolor="background.paper"
+        className="grid xs:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 content-center xs:py-8 py-16 px-10 shadow-md"
+      >
         {users.map((user, i) => (
           <UserCard key={user.account_id} user={user} cardIndex={i} />
         ))}

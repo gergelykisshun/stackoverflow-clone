@@ -1,5 +1,6 @@
 import { ISidebarOption } from "@/interfaces/sidebar";
 import { useSearchStore } from "@/store/searchStore";
+import { useThemeStore } from "@/store/themeStore";
 import {
   ListItem,
   ListItemButton,
@@ -22,6 +23,7 @@ const SidebarOption: FC<Props> = ({
   closeDrawer,
 }) => {
   const resetSearchText = useSearchStore((state) => state.reset);
+  const mode = useThemeStore((state) => state.mode);
 
   return (
     <Link
@@ -36,7 +38,10 @@ const SidebarOption: FC<Props> = ({
       <ListItem disablePadding>
         <ListItemButton className="gap-3" selected={isSelected}>
           <ListItemIcon className="min-w-0">{icon}</ListItemIcon>
-          <ListItemText primary={text} />
+          <ListItemText
+            style={{ color: mode === "dark" ? "#fff" : "#000" }}
+            primary={text}
+          />
         </ListItemButton>
       </ListItem>
     </Link>

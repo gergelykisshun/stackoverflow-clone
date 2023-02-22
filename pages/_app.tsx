@@ -1,6 +1,8 @@
 import Layout from "@/components/Layout/Layout";
 import { useThemeStore } from "@/store/themeStore";
 import "@/styles/globals.scss";
+import darkTheme from "@/themes/dark-theme";
+import lightTheme from "@/themes/light-theme";
 import { createTheme, ThemeProvider } from "@mui/material";
 import type { AppProps } from "next/app";
 import Head from "next/head";
@@ -13,9 +15,11 @@ export default function App({ Component, pageProps }: AppProps) {
   const theme = useMemo(
     () =>
       createTheme({
-        palette: {
-          mode: isInitMode ? 'light' : mode,
-        },
+        palette: isInitMode
+          ? { mode: "light" }
+          : mode === "dark"
+          ? darkTheme
+          : lightTheme,
       }),
     [mode, isInitMode]
   );
@@ -23,8 +27,8 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     setTimeout(() => {
       setIsInitMode(false);
-    }, 1)
-  }, [])
+    }, 1);
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

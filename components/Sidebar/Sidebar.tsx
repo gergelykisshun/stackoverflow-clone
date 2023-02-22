@@ -64,7 +64,7 @@ const Sidebar: FC<Props> = ({ closeDrawer }) => {
       </List>
       <FormControlLabel
         label={mode === "dark" ? "Dark mode" : "Light mode"}
-        control={<Switch onClick={() => setMode()} />}
+        control={<Switch checked={mode === "dark"} onClick={() => setMode()} />}
         className="px-4 py-2"
       />
     </div>

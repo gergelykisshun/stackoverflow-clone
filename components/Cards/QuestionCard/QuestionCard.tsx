@@ -2,7 +2,7 @@ import { IQuestion } from "@/interfaces/question";
 import React, { FC, useState } from "react";
 import DoneIcon from "@mui/icons-material/Done";
 import styles from "./QuestionCard.module.scss";
-import { ButtonGroup, Divider, Typography } from "@mui/material";
+import { Box, ButtonGroup, Divider, Typography } from "@mui/material";
 import TagButton from "@/components/TagButton/TagButton";
 import Link from "next/link";
 import { decodeSpecialChars } from "@/utility/decodeSpecialChars";
@@ -20,8 +20,11 @@ const QuestionCard: FC<Props> = ({ question }) => {
   );
 
   return (
-    <>
-      <div className="flex flex-col sm:flex-row sm:gap-4 mb-3">
+    <Box
+      className="px-5 pt-5 pb-2 rounded-sm max-w-5xl"
+      bgcolor="background.paper"
+    >
+      <Box className="flex flex-col sm:flex-row sm:gap-4 mb-5">
         {/* votes and answers display */}
         <div
           className={`flex flex-wrap gap-2 sm:flex-col sm:gap-1 mb-2 ${styles["answers-votes-container"]}`}
@@ -83,9 +86,9 @@ const QuestionCard: FC<Props> = ({ question }) => {
             </Link>
           )}
         </div>
-      </div>
-      <Divider variant="middle" className="mb-3 max-w-3xl" />
-    </>
+      </Box>
+      <Divider variant="middle" className="max-w-3xl" />
+    </Box>
   );
 };
 
