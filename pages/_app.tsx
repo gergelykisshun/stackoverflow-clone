@@ -4,20 +4,27 @@ import "@/styles/globals.scss";
 import { createTheme, ThemeProvider } from "@mui/material";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [isInitMode, setIsInitMode] = useState<boolean>(true);
   const mode = useThemeStore((state) => state.mode);
 
   const theme = useMemo(
     () =>
       createTheme({
         palette: {
-          mode,
+          mode: isInitMode ? 'light' : mode,
         },
       }),
-    [mode]
+    [mode, isInitMode]
   );
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIsInitMode(false);
+    }, 1)
+  }, [])
 
   return (
     <ThemeProvider theme={theme}>

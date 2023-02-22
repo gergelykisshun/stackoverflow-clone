@@ -93,7 +93,7 @@ export const getStaticProps: GetStaticProps = async () => {
   } catch (e) {
     console.log("Fetching tags failed!");
   }
-
+  
   try {
     users = await getUsersByQuery({ pagesize: 4 });
   } catch (e) {
