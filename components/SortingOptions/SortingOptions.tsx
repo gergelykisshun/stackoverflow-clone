@@ -30,7 +30,7 @@ const SortingOptions: FC<Props> = ({ defaultOption, sortOptions }) => {
   };
 
   return (
-    <Box className="mt-5 mb-10 flex xs:justify-center sm:justify-end">
+    <Box className="mb-10 mt-3 md:my-10 flex xs:justify-center sm:justify-end">
       <ToggleButtonGroup
         value={selected}
         exclusive
