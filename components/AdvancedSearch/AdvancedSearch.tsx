@@ -1,10 +1,6 @@
 import { FC, forwardRef } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import ListItemText from "@mui/material/ListItemText";
-import ListItem from "@mui/material/ListItem";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -13,21 +9,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import { useSearchStore } from "@/store/searchStore";
-import { DialogActions, TextField } from "@mui/material";
+import { DialogActions, Divider, TextField } from "@mui/material";
 import { useFormik } from "formik";
-
-import * as yup from "yup";
-
-const validationSchema = yup.object({
-  email: yup
-    .string()
-    .email("Enter a valid email")
-    .required("Email is required"),
-  password: yup
-    .string()
-    .min(8, "Password should be of minimum 8 characters length")
-    .required("Password is required"),
-});
+import { IAdvancedSearchQueryParams } from "@/interfaces/search";
+import { advancedSearchFrontendSchema } from "@/schema/forms/advancedSearch";
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -44,16 +29,31 @@ const AdvancedSearch: FC<Props> = () => {
   const isOpen = useSearchStore((state) => state.advancedSearchIsOpen);
   const toggleIsOpen = useSearchStore((state) => state.toggleAdvancedSearch);
 
-  const formik = useFormik({
-    initialValues: {
-      email: "foobar@example.com",
-      password: "foobar",
+  const formik = useFormik<IAdvancedSearchQueryParams>({
+    initialValues: {},
+    validate: (values) => {
+      const errors: IAdvancedSearchQueryParams = {};
+      if (!values.title && !values.q && !values.tagged && !values.body) {
+        errors.q = "at least one is required";
+        errors.title = "at least one is required";
+        errors.tagged = "at least one is required";
+        errors.body = "at least one is required";
+
+        return errors;
+      }
     },
-    validationSchema: validationSchema,
+    validationSchema: advancedSearchFrontendSchema,
     onSubmit: (values) => {
       alert(JSON.stringify(values, null, 2));
+      toggleIsOpen();
     },
   });
+
+  // MISSING STILL
+  // accepted?: boolean;
+  // closed?: boolean;
+
+  // answers? : number;
 
   return (
     <Dialog
@@ -81,33 +81,51 @@ const AdvancedSearch: FC<Props> = () => {
         <form onSubmit={formik.handleSubmit}>
           <TextField
             fullWidth
-            id="email"
-            name="email"
-            label="Email"
-            value={formik.values.email}
+            id="q"
+            name="q"
+            label="Keyword"
+            value={formik.values.q}
             onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
+            error={Boolean(formik.errors.q)}
+            helperText={formik.errors.q}
           />
           <TextField
             fullWidth
-            id="password"
-            name="password"
-            label="Password"
-            type="password"
-            value={formik.values.password}
+            id="title"
+            name="title"
+            label="In title"
+            value={formik.values.title}
             onChange={formik.handleChange}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
+            error={Boolean(formik.errors.title)}
+            helperText={formik.errors.title}
           />
-          <Button color="primary" variant="contained" fullWidth type="submit">
-            Submit
-          </Button>
+          <TextField
+            fullWidth
+            id="tagged"
+            name="tagged"
+            label="Tagged with"
+            value={formik.values.tagged}
+            onChange={formik.handleChange}
+            error={Boolean(formik.errors.tagged)}
+            helperText={formik.errors.tagged}
+          />
+          <TextField
+            fullWidth
+            id="body"
+            name="body"
+            label="In question"
+            value={formik.values.body}
+            onChange={formik.handleChange}
+            error={Boolean(formik.errors.body)}
+            helperText={formik.errors.body}
+          />
+          <Divider />
+
+          <DialogActions>
+            <Button type="submit">Search</Button>
+          </DialogActions>
         </form>
       </div>
-      <DialogActions>
-        <Button onClick={toggleIsOpen}>Search</Button>
-      </DialogActions>
     </Dialog>
   );
 };

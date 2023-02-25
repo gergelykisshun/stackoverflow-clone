@@ -1,12 +1,84 @@
-import { NextPage } from 'next'
-import React from 'react'
+import { advancedSearchByQuery, searchByQuery } from "@/axios/search";
+import QuestionCard from "@/components/Cards/QuestionCard/QuestionCard";
+import { IQuestion } from "@/interfaces/question";
+import { Box, Typography } from "@mui/material";
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
+import React from "react";
+import { advancedSearchQuerySchema, searchQuerySchema } from "@/schema/search";
+import {
+  IAdvancedSearchQueryParams,
+  ISearchQueryParams,
+} from "@/interfaces/search";
+import Paginator from "@/components/Paginator/Paginator";
+import validateSchema from "@/schema/validateSchema";
+import SortingOptions from "@/components/SortingOptions/SortingOptions";
+import { AdvancedSearchSortOptions, SearchSortOptions } from "@/enums/search";
+import Head from "next/head";
 
-type Props = {}
+type Props = {
+  questions: IQuestion[];
+  error?: string;
+};
 
-const AdvancedSearchPage: NextPage<Props> = () => {
+const SearchPage: NextPage<Props> = ({ questions, error }) => {
+  if (error) {
+    return <Typography variant="h6">{error}</Typography>;
+  }
+
   return (
-    <div>AdvancedSearchPage</div>
-  )
-}
+    <>
+      <Head>
+        <title>Flash answers - Search</title>
+      </Head>
+      <Typography variant="h3" className="font-light" gutterBottom>
+        Advance Search Results
+      </Typography>
 
-export default AdvancedSearchPage
+      <SortingOptions
+        sortOptions={Object.values(AdvancedSearchSortOptions)}
+        defaultOption={AdvancedSearchSortOptions.VOTES}
+      />
+
+      <Box className="grid grid-cols-1">
+        {questions.map((question) => (
+          <QuestionCard key={question.question_id} question={question} />
+        ))}
+        <Paginator />
+      </Box>
+    </>
+  );
+};
+
+export default SearchPage;
+
+export const getServerSideProps: GetServerSideProps = async ({
+  query,
+  res,
+}: GetServerSidePropsContext) => {
+  res.setHeader(
+    "Cache-control",
+    `public, s-maxage=${process.env.SSR_CACHE_MAX_AGE}, stale-while-revalidate=${process.env.SSR_CACHE_REVALIDATE}`
+  );
+  res.setHeader("Accept-Encoding", "deflate, gzip");
+
+  try {
+    const searchQuery = (await validateSchema(
+      query,
+      advancedSearchQuerySchema
+    )) as IAdvancedSearchQueryParams;
+
+    const questions: IQuestion[] = await advancedSearchByQuery(searchQuery);
+    return { props: { questions } };
+    // TODO remove any
+  } catch (e: any) {
+    return {
+      props: {
+        questions: [],
+        error:
+          e.details?.length > 0
+            ? e.details[0].message
+            : "Sorry something went wrong!",
+      },
+    };
+  }
+};

@@ -8,4 +8,15 @@ export interface ISearchQueryParams extends IGenericApiQuery {
   nottagged?: string;
 }
 
-export interface IAdvancedSearchQueryParams extends IGenericApiQuery {}
+export interface IAdvancedSearchQueryParams extends IGenericApiQuery {
+  q?: string;
+
+  accepted?: boolean;
+  closed?: boolean;
+
+  answers?: number;
+
+  body?: string;
+  title?: string;
+  tagged?: string;
+}
