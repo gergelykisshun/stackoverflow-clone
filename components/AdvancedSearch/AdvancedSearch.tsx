@@ -9,7 +9,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import { useSearchStore } from "@/store/searchStore";
-import { DialogActions, Divider, TextField } from "@mui/material";
+import {
+  Checkbox,
+  DialogActions,
+  Divider,
+  FormControlLabel,
+  TextField,
+} from "@mui/material";
 import { useFormik } from "formik";
 import { IAdvancedSearchQueryParams } from "@/interfaces/search";
 import { advancedSearchFrontendSchema } from "@/schema/forms/advancedSearch";
@@ -30,7 +36,7 @@ const AdvancedSearch: FC<Props> = () => {
   const toggleIsOpen = useSearchStore((state) => state.toggleAdvancedSearch);
 
   const formik = useFormik<IAdvancedSearchQueryParams>({
-    initialValues: {},
+    initialValues: { accepted: false, closed: false },
     validate: (values) => {
       const errors: IAdvancedSearchQueryParams = {};
       if (!values.title && !values.q && !values.tagged && !values.body) {
@@ -48,12 +54,6 @@ const AdvancedSearch: FC<Props> = () => {
       toggleIsOpen();
     },
   });
-
-  // MISSING STILL
-  // accepted?: boolean;
-  // closed?: boolean;
-
-  // answers? : number;
 
   return (
     <Dialog
@@ -119,7 +119,44 @@ const AdvancedSearch: FC<Props> = () => {
             error={Boolean(formik.errors.body)}
             helperText={formik.errors.body}
           />
+          <TextField
+            fullWidth
+            id="answers"
+            name="answers"
+            label="Minimum nbr of answers"
+            type="number"
+            value={formik.values.answers}
+            onChange={formik.handleChange}
+            error={Boolean(formik.errors.answers)}
+            helperText={formik.errors.answers}
+          />
           <Divider />
+          <FormControlLabel
+            control={
+              <Checkbox
+                id="accepted"
+                name="accepted"
+                value={formik.values.accepted}
+                onChange={(e) =>
+                  formik.setFieldValue("accepted", e.target.checked)
+                }
+              />
+            }
+            label="Accepted"
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                id="closed"
+                name="closed"
+                value={formik.values.closed}
+                onChange={(e) =>
+                  formik.setFieldValue("closed", e.target.checked)
+                }
+              />
+            }
+            label="Closed"
+          />
 
           <DialogActions>
             <Button type="submit">Search</Button>
