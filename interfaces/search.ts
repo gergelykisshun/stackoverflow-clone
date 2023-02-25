@@ -7,3 +7,5 @@ export interface ISearchQueryParams extends IGenericApiQuery {
   tagged?: string;
   nottagged?: string;
 }
+
+export interface IAdvancedSearchQueryParams extends IGenericApiQuery {}

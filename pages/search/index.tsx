@@ -1,7 +1,7 @@
 import { searchByQuery } from "@/axios/search";
 import QuestionCard from "@/components/Cards/QuestionCard/QuestionCard";
 import { IQuestion } from "@/interfaces/question";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
 import { searchQuerySchema } from "@/schema/search";
@@ -11,7 +11,6 @@ import validateSchema from "@/schema/validateSchema";
 import SortingOptions from "@/components/SortingOptions/SortingOptions";
 import { SearchSortOptions } from "@/enums/search";
 import Head from "next/head";
-import { useSearchStore } from "@/store/searchStore";
 
 type Props = {
   searchedFor: string;
@@ -20,9 +19,6 @@ type Props = {
 };
 
 const SearchPage: NextPage<Props> = ({ questions, error, searchedFor }) => {
-  const toggleAdvancedSearch = useSearchStore(
-    (state) => state.toggleAdvancedSearch
-  );
   if (error) {
     return <Typography variant="h6">{error}</Typography>;
   }
@@ -38,15 +34,12 @@ const SearchPage: NextPage<Props> = ({ questions, error, searchedFor }) => {
       <Typography className="font-light mb-10" variant="body2" gutterBottom>
         Results for {searchedFor}
       </Typography>
-      <Box className="flex items-center justify-between flex-col md:flex-row">
-        <Button size="small" onClick={() => toggleAdvancedSearch()}>
-          advanced search
-        </Button>
-        <SortingOptions
-          sortOptions={Object.values(SearchSortOptions)}
-          defaultOption={SearchSortOptions.ACTIVITY}
-        />
-      </Box>
+
+      <SortingOptions
+        sortOptions={Object.values(SearchSortOptions)}
+        defaultOption={SearchSortOptions.ACTIVITY}
+      />
+
       <Box className="grid grid-cols-1">
         {questions.map((question) => (
           <QuestionCard key={question.question_id} question={question} />
