@@ -5,9 +5,10 @@ import React, { FC } from "react";
 
 type Props = {
   isCentered?: boolean;
+  total?: number;
 };
 
-const Paginator: FC<Props> = ({ isCentered }) => {
+const Paginator: FC<Props> = ({ isCentered, total }) => {
   const router = useRouter();
   const query = router.query;
   const currentPath = router.asPath;
@@ -16,7 +17,7 @@ const Paginator: FC<Props> = ({ isCentered }) => {
     <Box className={`${isCentered ? "flex justify-center " : ""} mt-5`}>
       <Pagination
         sx={{ size: { xs: "small", md: "medium" } }}
-        count={100}
+        count={total ? Math.floor(total / 30) : 1}
         page={Number(query.page) || 1}
         color="primary"
         onChange={(e, newPage) =>

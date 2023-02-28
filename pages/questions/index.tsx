@@ -14,10 +14,11 @@ import Head from "next/head";
 
 type Props = {
   questions: IQuestion[];
+  total?: number;
   error?: string;
 };
 
-const AllQuestionsPage: NextPage<Props> = ({ questions, error }) => {
+const AllQuestionsPage: NextPage<Props> = ({ questions, error, total }) => {
   if (error) {
     return <Typography variant="h6">{error}</Typography>;
   }
@@ -36,7 +37,7 @@ const AllQuestionsPage: NextPage<Props> = ({ questions, error }) => {
           <QuestionCard key={question.question_id} question={question} />
         ))}
       </Box>
-      <Paginator isCentered />
+      <Paginator total={total} isCentered />
     </>
   );
 };
@@ -63,8 +64,9 @@ export const getServerSideProps: GetServerSideProps = async ({
       questionQuery.sort = "votes";
     }
 
-    const questions: IQuestion[] = await getQuestionsByQuery(questionQuery);
-    return { props: { questions } };
+    const res = await getQuestionsByQuery(questionQuery);
+
+    return { props: { questions: res.data, total: res.total } };
   } catch (e: any) {
     return {
       props: {

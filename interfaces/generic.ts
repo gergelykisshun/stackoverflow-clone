@@ -7,6 +7,7 @@ export interface IGenericApiResponse<T> {
   items: T[];
   quota_max: number;
   quota_remaining: number;
+  total?: number;
 }
 
 export interface IGenericApiQuery {
