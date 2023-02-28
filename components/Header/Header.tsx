@@ -5,6 +5,8 @@ import {
   Paper,
   InputBase,
   Divider,
+  Button,
+  Typography,
 } from "@mui/material";
 import React, { FC, useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -21,6 +23,10 @@ type Props = {
 const Header: FC<Props> = ({ drawerWidth, handleDrawerToggle }) => {
   const searchText = useSearchStore((state) => state.search);
   const setSearchText = useSearchStore((state) => state.change);
+
+  const toggleAdvancedSearch = useSearchStore(
+    (state) => state.toggleAdvancedSearch
+  );
 
   const router = useRouter();
 
@@ -41,7 +47,8 @@ const Header: FC<Props> = ({ drawerWidth, handleDrawerToggle }) => {
           aria-label="open drawer"
           edge="start"
           onClick={handleDrawerToggle}
-          sx={{ mr: 2, display: { sm: "none" } }}
+          sx={{ display: { sm: "none" } }}
+          className="mr-3"
         >
           <MenuIcon />
         </IconButton>
@@ -83,6 +90,14 @@ const Header: FC<Props> = ({ drawerWidth, handleDrawerToggle }) => {
             <SendIcon />
           </IconButton>
         </Paper>
+
+        <Typography
+          color="common.white"
+          className="cursor-pointer underline ml-3"
+          onClick={() => toggleAdvancedSearch()}
+        >
+          Advanced
+        </Typography>
       </Toolbar>
     </AppBar>
   );

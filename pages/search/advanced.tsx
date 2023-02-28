@@ -1,24 +1,23 @@
-import { searchByQuery } from "@/axios/search";
+import { advancedSearchByQuery } from "@/axios/search";
 import QuestionCard from "@/components/Cards/QuestionCard/QuestionCard";
 import { IQuestion } from "@/interfaces/question";
 import { Box, Typography } from "@mui/material";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
-import { searchQuerySchema } from "@/schema/search";
-import { ISearchQueryParams } from "@/interfaces/search";
+import { advancedSearchQuerySchema } from "@/schema/search";
+import { IAdvancedSearchQueryParams } from "@/interfaces/search";
 import Paginator from "@/components/Paginator/Paginator";
 import validateSchema from "@/schema/validateSchema";
 import SortingOptions from "@/components/SortingOptions/SortingOptions";
-import { SearchSortOptions } from "@/enums/search";
+import { AdvancedSearchSortOptions } from "@/enums/search";
 import Head from "next/head";
 
 type Props = {
-  searchedFor: string;
   questions: IQuestion[];
   error?: string;
 };
 
-const SearchPage: NextPage<Props> = ({ questions, error, searchedFor }) => {
+const SearchPage: NextPage<Props> = ({ questions, error }) => {
   if (error) {
     return <Typography variant="h6">{error}</Typography>;
   }
@@ -29,15 +28,12 @@ const SearchPage: NextPage<Props> = ({ questions, error, searchedFor }) => {
         <title>Flash answers - Search</title>
       </Head>
       <Typography variant="h3" className="font-light" gutterBottom>
-        Search Results
-      </Typography>
-      <Typography className="font-light mb-10" variant="body2" gutterBottom>
-        Results for {searchedFor}
+        Advanced Search Results
       </Typography>
 
       <SortingOptions
-        sortOptions={Object.values(SearchSortOptions)}
-        defaultOption={SearchSortOptions.VOTES}
+        sortOptions={Object.values(AdvancedSearchSortOptions)}
+        defaultOption={AdvancedSearchSortOptions.VOTES}
       />
 
       <Box className="grid grid-cols-1">
@@ -62,27 +58,18 @@ export const getServerSideProps: GetServerSideProps = async ({
   );
   res.setHeader("Accept-Encoding", "deflate, gzip");
 
-  if (!query.intitle && !query.tagged) {
-    return {
-      props: {
-        questions: [],
-        error: "One of intitle or tagged queries must be set to search!",
-      },
-    };
-  }
-
   try {
     const searchQuery = (await validateSchema(
       query,
-      searchQuerySchema
-    )) as ISearchQueryParams;
+      advancedSearchQuerySchema
+    )) as IAdvancedSearchQueryParams;
 
     if (!searchQuery.sort) {
       searchQuery.sort = "votes";
     }
 
-    const questions: IQuestion[] = await searchByQuery(searchQuery);
-    return { props: { searchedFor: query.intitle || query.tagged, questions } };
+    const questions: IQuestion[] = await advancedSearchByQuery(searchQuery);
+    return { props: { questions } };
     // TODO remove any
   } catch (e: any) {
     return {

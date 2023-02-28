@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 
 import React, { FC, ReactNode, useEffect, useState } from "react";
 import { useWindowSize } from "usehooks-ts";
+import AdvancedSearch from "../AdvancedSearch/AdvancedSearch";
 import Header from "../Header/Header";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import Sidebar from "../Sidebar/Sidebar";
@@ -94,6 +95,7 @@ const Layout: FC<Props> = ({ children }) => {
         {isLoading && <ProgressBar />}
         {children}
       </Box>
+      <AdvancedSearch />
     </Box>
   );
 };
