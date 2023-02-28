@@ -1,4 +1,4 @@
-import { FC, forwardRef } from "react";
+import { FC, forwardRef, useEffect } from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import AppBar from "@mui/material/AppBar";
@@ -10,15 +10,19 @@ import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
 import { useSearchStore } from "@/store/searchStore";
 import {
+  Box,
   Checkbox,
   DialogActions,
   Divider,
   FormControlLabel,
+  Stack,
   TextField,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { IAdvancedSearchQueryParams } from "@/interfaces/search";
 import { advancedSearchFrontendSchema } from "@/schema/forms/advancedSearch";
+import { useRouter } from "next/router";
+import transformValuesIntoQuery from "@/utility/transformValuesIntoQuery";
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & {
@@ -34,6 +38,12 @@ type Props = {};
 const AdvancedSearch: FC<Props> = () => {
   const isOpen = useSearchStore((state) => state.advancedSearchIsOpen);
   const toggleIsOpen = useSearchStore((state) => state.toggleAdvancedSearch);
+  const router = useRouter();
+
+  const closeForm = () => {
+    toggleIsOpen();
+    formik.resetForm();
+  };
 
   const formik = useFormik<IAdvancedSearchQueryParams>({
     initialValues: { accepted: false, closed: false },
@@ -50,16 +60,18 @@ const AdvancedSearch: FC<Props> = () => {
     },
     validationSchema: advancedSearchFrontendSchema,
     onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-      toggleIsOpen();
+      router.push(`/search/advanced${transformValuesIntoQuery(values)}`)
+      closeForm();
     },
+    validateOnBlur: false,
+    validateOnChange: false,
   });
 
   return (
     <Dialog
       fullWidth
       open={isOpen}
-      onClose={toggleIsOpen}
+      onClose={closeForm}
       TransitionComponent={Transition}
     >
       <AppBar sx={{ position: "relative" }}>
@@ -67,7 +79,7 @@ const AdvancedSearch: FC<Props> = () => {
           <IconButton
             edge="start"
             color="inherit"
-            onClick={toggleIsOpen}
+            onClick={closeForm}
             aria-label="close"
           >
             <CloseIcon />
@@ -77,10 +89,10 @@ const AdvancedSearch: FC<Props> = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <div>
-        <form onSubmit={formik.handleSubmit}>
+
+      <form onSubmit={formik.handleSubmit}>
+        <Stack direction={"column"} spacing={2} sx={{ padding: 2 }}>
           <TextField
-            fullWidth
             id="q"
             name="q"
             label="Keyword"
@@ -88,9 +100,9 @@ const AdvancedSearch: FC<Props> = () => {
             onChange={formik.handleChange}
             error={Boolean(formik.errors.q)}
             helperText={formik.errors.q}
+            onBlur={formik.handleBlur}
           />
           <TextField
-            fullWidth
             id="title"
             name="title"
             label="In title"
@@ -98,9 +110,9 @@ const AdvancedSearch: FC<Props> = () => {
             onChange={formik.handleChange}
             error={Boolean(formik.errors.title)}
             helperText={formik.errors.title}
+            onBlur={formik.handleBlur}
           />
           <TextField
-            fullWidth
             id="tagged"
             name="tagged"
             label="Tagged with"
@@ -108,9 +120,9 @@ const AdvancedSearch: FC<Props> = () => {
             onChange={formik.handleChange}
             error={Boolean(formik.errors.tagged)}
             helperText={formik.errors.tagged}
+            onBlur={formik.handleBlur}
           />
           <TextField
-            fullWidth
             id="body"
             name="body"
             label="In question"
@@ -118,9 +130,9 @@ const AdvancedSearch: FC<Props> = () => {
             onChange={formik.handleChange}
             error={Boolean(formik.errors.body)}
             helperText={formik.errors.body}
+            onBlur={formik.handleBlur}
           />
           <TextField
-            fullWidth
             id="answers"
             name="answers"
             label="Minimum nbr of answers"
@@ -129,40 +141,43 @@ const AdvancedSearch: FC<Props> = () => {
             onChange={formik.handleChange}
             error={Boolean(formik.errors.answers)}
             helperText={formik.errors.answers}
+            onBlur={formik.handleBlur}
           />
           <Divider />
-          <FormControlLabel
-            control={
-              <Checkbox
-                id="accepted"
-                name="accepted"
-                value={formik.values.accepted}
-                onChange={(e) =>
-                  formik.setFieldValue("accepted", e.target.checked)
-                }
-              />
-            }
-            label="Accepted"
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
-                id="closed"
-                name="closed"
-                value={formik.values.closed}
-                onChange={(e) =>
-                  formik.setFieldValue("closed", e.target.checked)
-                }
-              />
-            }
-            label="Closed"
-          />
+          <Stack direction={"row"}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  id="accepted"
+                  name="accepted"
+                  value={formik.values.accepted}
+                  onChange={(e) =>
+                    formik.setFieldValue("accepted", e.target.checked)
+                  }
+                />
+              }
+              label="Accepted"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  id="closed"
+                  name="closed"
+                  value={formik.values.closed}
+                  onChange={(e) =>
+                    formik.setFieldValue("closed", e.target.checked)
+                  }
+                />
+              }
+              label="Closed"
+            />
+          </Stack>
+        </Stack>
 
-          <DialogActions>
-            <Button type="submit">Search</Button>
-          </DialogActions>
-        </form>
-      </div>
+        <DialogActions>
+          <Button type="submit">Search</Button>
+        </DialogActions>
+      </form>
     </Dialog>
   );
 };

@@ -1,18 +1,15 @@
-import { advancedSearchByQuery, searchByQuery } from "@/axios/search";
+import { advancedSearchByQuery } from "@/axios/search";
 import QuestionCard from "@/components/Cards/QuestionCard/QuestionCard";
 import { IQuestion } from "@/interfaces/question";
 import { Box, Typography } from "@mui/material";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import React from "react";
-import { advancedSearchQuerySchema, searchQuerySchema } from "@/schema/search";
-import {
-  IAdvancedSearchQueryParams,
-  ISearchQueryParams,
-} from "@/interfaces/search";
+import { advancedSearchQuerySchema } from "@/schema/search";
+import { IAdvancedSearchQueryParams } from "@/interfaces/search";
 import Paginator from "@/components/Paginator/Paginator";
 import validateSchema from "@/schema/validateSchema";
 import SortingOptions from "@/components/SortingOptions/SortingOptions";
-import { AdvancedSearchSortOptions, SearchSortOptions } from "@/enums/search";
+import { AdvancedSearchSortOptions } from "@/enums/search";
 import Head from "next/head";
 
 type Props = {
@@ -31,7 +28,7 @@ const SearchPage: NextPage<Props> = ({ questions, error }) => {
         <title>Flash answers - Search</title>
       </Head>
       <Typography variant="h3" className="font-light" gutterBottom>
-        Advance Search Results
+        Advanced Search Results
       </Typography>
 
       <SortingOptions
@@ -66,6 +63,10 @@ export const getServerSideProps: GetServerSideProps = async ({
       query,
       advancedSearchQuerySchema
     )) as IAdvancedSearchQueryParams;
+
+    if (!searchQuery.sort) {
+      searchQuery.sort = "votes";
+    }
 
     const questions: IQuestion[] = await advancedSearchByQuery(searchQuery);
     return { props: { questions } };

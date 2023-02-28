@@ -28,5 +28,7 @@ export const advancedSearchByQuery = async (
     }
   );
 
+  console.log("RES", response.data);
+
   return response.data.items;
 };

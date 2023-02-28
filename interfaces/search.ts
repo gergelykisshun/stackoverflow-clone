@@ -9,6 +9,7 @@ export interface ISearchQueryParams extends IGenericApiQuery {
 }
 
 export interface IAdvancedSearchQueryParams extends IGenericApiQuery {
+  sort?: "activity" | "votes" | "creation" | "relevance";
   q?: string;
 
   accepted?: boolean;

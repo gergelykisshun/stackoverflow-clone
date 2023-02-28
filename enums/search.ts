@@ -1,7 +1,7 @@
 export enum SearchSortOptions {
+  VOTES = "votes",
   ACTIVITY = "activity",
   CREATION = "creation",
-  VOTES = "votes",
   RELEVANCE = "relevance",
 }
 

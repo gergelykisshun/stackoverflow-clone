@@ -37,7 +37,7 @@ const SearchPage: NextPage<Props> = ({ questions, error, searchedFor }) => {
 
       <SortingOptions
         sortOptions={Object.values(SearchSortOptions)}
-        defaultOption={SearchSortOptions.ACTIVITY}
+        defaultOption={SearchSortOptions.VOTES}
       />
 
       <Box className="grid grid-cols-1">
@@ -76,6 +76,10 @@ export const getServerSideProps: GetServerSideProps = async ({
       query,
       searchQuerySchema
     )) as ISearchQueryParams;
+
+    if (!searchQuery.sort) {
+      searchQuery.sort = "votes";
+    }
 
     const questions: IQuestion[] = await searchByQuery(searchQuery);
     return { props: { searchedFor: query.intitle || query.tagged, questions } };
