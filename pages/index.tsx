@@ -89,13 +89,13 @@ export const getStaticProps: GetStaticProps = async () => {
   let questions: IQuestion[] = [];
 
   try {
-    tags = await getTagsByQuery({ pagesize: 10 });
+    tags = (await getTagsByQuery({ pagesize: 10 })).data;
   } catch (e) {
     console.log("Fetching tags failed!");
   }
 
   try {
-    users = await getUsersByQuery({ pagesize: 4 });
+    users = (await getUsersByQuery({ pagesize: 4 })).data;
   } catch (e) {
     console.log("Fetching users failed!");
   }

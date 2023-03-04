@@ -13,10 +13,11 @@ import Head from "next/head";
 
 type Props = {
   tags: ITag[];
+  has_more?: boolean;
   error?: string;
 };
 
-const TagsPage: NextPage<Props> = ({ tags, error }) => {
+const TagsPage: NextPage<Props> = ({ tags, error, has_more }) => {
   if (error) {
     return <Typography variant="h6">{error}</Typography>;
   }
@@ -46,7 +47,7 @@ const TagsPage: NextPage<Props> = ({ tags, error }) => {
           <TagCard key={tag.name} tag={tag} />
         ))}
       </Box>
-      <Paginator isCentered />
+      <Paginator isCentered has_more={has_more} />
     </>
   );
 };
@@ -69,8 +70,8 @@ export const getServerSideProps: GetServerSideProps = async ({
       tagQuerySchema
     )) as ITagQueryParams;
 
-    const tags: ITag[] = await getTagsByQuery(tagQuery);
-    return { props: { tags } };
+    const res = await getTagsByQuery(tagQuery);
+    return { props: { tags: res.data, has_more: res.has_more } };
   } catch (e: any) {
     return {
       props: {

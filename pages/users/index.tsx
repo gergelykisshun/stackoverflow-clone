@@ -13,10 +13,11 @@ import Head from "next/head";
 
 type Props = {
   users: IUser[];
+  has_more?: boolean;
   error?: string;
 };
 
-const AllUsersPage: NextPage<Props> = ({ users, error }) => {
+const AllUsersPage: NextPage<Props> = ({ users, error, has_more }) => {
   if (error) {
     return <Typography variant="h6">{error}</Typography>;
   }
@@ -38,7 +39,7 @@ const AllUsersPage: NextPage<Props> = ({ users, error }) => {
           <UserCard key={user.account_id} user={user} cardIndex={i} />
         ))}
       </Box>
-      <Paginator isCentered />
+      <Paginator isCentered has_more={has_more} />
     </>
   );
 };
@@ -61,9 +62,9 @@ export const getServerSideProps: GetServerSideProps = async ({
       userQuerySchema
     )) as IUserQueryParams;
 
-    const users = await getUsersByQuery(userQuery);
+    const res = await getUsersByQuery(userQuery);
 
-    return { props: { users } };
+    return { props: { users: res.data, has_more: res.has_more } };
   } catch (e: any) {
     return {
       props: {

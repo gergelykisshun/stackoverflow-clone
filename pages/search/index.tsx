@@ -16,9 +16,15 @@ type Props = {
   searchedFor: string;
   questions: IQuestion[];
   error?: string;
+  has_more?: boolean;
 };
 
-const SearchPage: NextPage<Props> = ({ questions, error, searchedFor }) => {
+const SearchPage: NextPage<Props> = ({
+  questions,
+  error,
+  searchedFor,
+  has_more,
+}) => {
   if (error) {
     return <Typography variant="h6">{error}</Typography>;
   }
@@ -44,8 +50,8 @@ const SearchPage: NextPage<Props> = ({ questions, error, searchedFor }) => {
         {questions.map((question) => (
           <QuestionCard key={question.question_id} question={question} />
         ))}
-        <Paginator />
       </Box>
+      <Paginator has_more={has_more} isCentered />
     </>
   );
 };
@@ -81,8 +87,14 @@ export const getServerSideProps: GetServerSideProps = async ({
       searchQuery.sort = "votes";
     }
 
-    const questions: IQuestion[] = await searchByQuery(searchQuery);
-    return { props: { searchedFor: query.intitle || query.tagged, questions } };
+    const res = await searchByQuery(searchQuery);
+    return {
+      props: {
+        searchedFor: query.intitle || query.tagged,
+        questions: res.data,
+        has_more: res.has_more,
+      },
+    };
     // TODO remove any
   } catch (e: any) {
     return {
