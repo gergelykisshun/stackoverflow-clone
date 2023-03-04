@@ -1,21 +1,20 @@
-import { IGenericApiResponse } from "@/interfaces/generic";
+import { IGenericApiResponse, IGenericData } from "@/interfaces/generic";
 import { IQuestion, IQuestionQueryParams } from "@/interfaces/question";
-import { number } from "joi";
 import { api } from "./init";
 
 const QUESTIONBASE_URL = "/questions";
 
 export const getQuestionsByQuery = async (
   queryObj: IQuestionQueryParams
-): Promise<{ data: IQuestion[]; total?: number }> => {
+): Promise<IGenericData<IQuestion>> => {
   const response = await api.get<IGenericApiResponse<IQuestion>>(
     QUESTIONBASE_URL,
     {
-      params: { ...queryObj, filter: "!nOedRLhSc)" },
+      params: queryObj,
     }
   );
 
-  return { data: response.data.items, total: response.data.total };
+  return { data: response.data.items, has_more: response.data.has_more };
 };
 
 export const getQuestionById = async (

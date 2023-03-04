@@ -22,3 +22,8 @@ export interface IGenericApiQuery {
 
   order?: "desc" | "asc";
 }
+
+export interface IGenericData<T> {
+  data: T[];
+  has_more: boolean;
+}

@@ -1,5 +1,5 @@
 import { IAnswer } from "@/interfaces/answer";
-import { IGenericApiResponse } from "@/interfaces/generic";
+import { IGenericApiResponse, IGenericData } from "@/interfaces/generic";
 import { IQuestion } from "@/interfaces/question";
 import { ITag } from "@/interfaces/tags";
 import { IUser, IUserQueryParams } from "@/interfaces/users";
@@ -9,12 +9,12 @@ const USERSBASE_URL = "/users";
 
 export const getUsersByQuery = async (
   queryObj: IUserQueryParams
-): Promise<IUser[]> => {
+): Promise<IGenericData<IUser>> => {
   const response = await api.get<IGenericApiResponse<IUser>>(USERSBASE_URL, {
     params: queryObj,
   });
 
-  return response.data.items;
+  return { data: response.data.items, has_more: response.data.has_more };
 };
 
 export const getUserById = async (userId: number): Promise<IUser> => {
@@ -47,8 +47,6 @@ export const getAnswersByUserId = async (
     `${USERSBASE_URL}/${userId}/answers`,
     { params: { pagesize, sort: "votes" } }
   );
-
-  console.log(response.data.items.slice(0, 3));
 
   return response.data.items;
 };

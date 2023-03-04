@@ -1,4 +1,4 @@
-import { IGenericApiResponse } from "@/interfaces/generic";
+import { IGenericApiResponse, IGenericData } from "@/interfaces/generic";
 import { IQuestion } from "@/interfaces/question";
 import {
   IAdvancedSearchQueryParams,
@@ -10,17 +10,17 @@ const SEARCH_URL = "/search";
 
 export const searchByQuery = async (
   queryObj: ISearchQueryParams
-): Promise<IQuestion[]> => {
+): Promise<IGenericData<IQuestion>> => {
   const response = await api.get<IGenericApiResponse<IQuestion>>(SEARCH_URL, {
     params: queryObj,
   });
 
-  return response.data.items;
+  return { data: response.data.items, has_more: response.data.has_more };
 };
 
 export const advancedSearchByQuery = async (
   queryObj: IAdvancedSearchQueryParams
-): Promise<IQuestion[]> => {
+): Promise<IGenericData<IQuestion>> => {
   const response = await api.get<IGenericApiResponse<IQuestion>>(
     `${SEARCH_URL}/advanced`,
     {
@@ -28,7 +28,5 @@ export const advancedSearchByQuery = async (
     }
   );
 
-  console.log("RES", response.data);
-
-  return response.data.items;
+  return { data: response.data.items, has_more: response.data.has_more };
 };
